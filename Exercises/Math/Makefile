@@ -1,4 +1,4 @@
-CXXFLAGS += -Wall -Wextra -O2
+CXXFLAGS = -Wall -O3 -ffast-math
 LDLIBS += -lstdc++ -lm
 
 Out.txt : main
@@ -12,7 +12,7 @@ objects/sfuns.o: headers/sfuns.h src/sfuns.cpp
 objects/math.o: headers/math.h src/math.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $(filter %.cpp,$^)
 clean:
-	$(RM) [Oo]ut* .exe objects/*.o
+	$(RM) [Oo]ut* main objects/*.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)
