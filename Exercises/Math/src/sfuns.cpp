@@ -23,11 +23,11 @@ double sgamma(double x)
 
 void table() 
 {
-    std::cout << " n    Γ(n)" << "\n";
+    std::cout << "n     Γ(n)" << "\n";
     std::cout << "=============" << "\n";
     
     for (int i = 1; i <= 10; i++)
     {
-        std::cout << std::setw(2) << i << "    " << fgamma(i) << "\n";
+        std::cout << std::setw(i) << "     " << fgamma(i) << "\n";
     }
 }
