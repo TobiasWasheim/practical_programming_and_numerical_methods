@@ -1,0 +1,31 @@
+Part 1: Maximum/Minimum representable Integers
+Largest Integer = 2147483647
+Smallest Integer = -2147483648
+
+largestInteger == INT32_MAX  1
+smallestInteger == INT32_MIN 1
+
+Part 2: The Machine Epsilon
+Machine epsilon for double-precision: 4.94066e-324
+Machine epsilon for float-precision:  1.4013e-45
+
+Part 3:
+a == b ? 1
+a > 1 ?  0
+b > 1 ?  0
+
+Explanation:
+Since epsilon is the smallest representation of the value between 1.0 and the next. So
+when we define tiny as epsilon/2, the program sees tiny as equal to zero.
+
+Part 3:Tiny Epsilon
+a == b ? 1
+a > 1 ?  0
+b > 1 ?  0
+
+Explanation:
+Since epsilon is the smallest representation of the value between 1.0 and the next. So
+when we define tiny as epsilon/2, the program sees tiny as equal to zero.
+
+Part 4: Comparing Doubles
+Compare d1 and d2: 1
