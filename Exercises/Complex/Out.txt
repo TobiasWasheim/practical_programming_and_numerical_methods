@@ -1,0 +1,7 @@
+Square root of  -1 = 0 + 1i
+Square root of   i = 0.707107 + 0.707107i
+               e^i = 0.540302 + 0.841471i
+             e^ipi = -1 + 1.22465e-16i
+               i^i = 0.20788 + 0i
+             ln(i) = 0 + 1.5708i
+          sin(ipi) = 0 + 11.5487i
