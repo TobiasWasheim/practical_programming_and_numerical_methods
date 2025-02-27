@@ -71,3 +71,21 @@ void vec::print(std::string s) const {
 double vec::dot (vec& other) {
     return x*other.x+y*other.y+z*other.z; 
 }
+
+bool approx(double a,double b,double acc=1e-9,double eps=1e-9){
+	if(std::fabs(a-b)<acc)return true;
+	if(std::fabs(a-b)<eps*(std::fabs(a)+std::fabs(b)))return true;
+	return false;
+	}
+
+bool approx(const vec& u, const vec& v, double acc, double eps){
+	if(!approx(u.x,v.x,acc,eps))return false;
+	if(!approx(u.y,v.y,acc,eps))return false;
+	if(!approx(u.z,v.z,acc,eps))return false;
+	return true;
+}
+
+std::ostream& operator<<(std::ostream& os, const vec& v){
+	os << "{ " << v.x << ", " << v.y << ", " << v.z << " } ";
+	return os;
+		}

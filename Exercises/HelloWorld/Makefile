@@ -1,5 +1,6 @@
 CXXFLAGS = -Wall -O3 -ffast-math
 LDLIBS = -lstdc++ -lm
+
 Out.txt : main
 	./main > Out.txt
 main: objects/main.o objects/hello.o

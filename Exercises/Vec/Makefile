@@ -1,15 +1,20 @@
-CXXFLAGS = -std=c++23 -O0 -ffast-math
-LDLIBS = -lstdc++ -lm
-Out.txt: main.exe
-	./main.exe > Out.txt
-main.exe: Objects/main.o Objects/vec.o
+CXXFLAGS += -Wall -std=c++23 #-ferror-limit=1 
+LDLIBS += -lstdc++ -lm
+
+Out.txt: main
+	./$< > $@
+
+main: main.o vec.o
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
-Objects/main.o: Includes/vec.h main.cpp
+
+vec.o: vec.h vec.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
-Objects/vec.o: Includes/vec.h Includes/vec.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $(filter %.cpp,$^)
+main.o: vec.h main.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
+
+
 clean:
-	$(RM) [Oo]ut* *.exe Objects/*.o
+	$(RM) [Oo]ut* main *.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)
