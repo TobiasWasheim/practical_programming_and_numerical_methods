@@ -1,0 +1,20 @@
+Test initializing 0-vector and printing it
+0
+0
+0
+Test initializing vector with values and printing it
+1
+4
+3
+Test that I can print the 2nd element (4)
+4Test the + operator
+2
+8
+6
+----
+10
+40
+30
+40
+260
+5
