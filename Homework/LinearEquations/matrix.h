@@ -42,23 +42,24 @@ public:
 
     Matrix transpose();                      // Transpose
 
-    class RowProxy 
-    {
-    public:            
-        RowProxy(std::vector<double>& row);
-        double& operator[](size_t col);
-        double operator[](size_t col) const;
+    
+    class RowProxy {
+        public:
+            RowProxy(std::vector<double>& row);
+            RowProxy(const std::vector<double>& row); // Added constructor for const vectors.
+            double& operator[](int col);
+            double operator[](int col) const;
+        private:
+            std::vector<double>& row_;
+        };
+        // Overloaded operator[] for row access
+        RowProxy operator[](int row);
+
+        const RowProxy operator[](int row) const;
+
+        // Helper Function
     private:
-        std::vector<double>& row_;
-    };
-    // Overloaded operator[] for row access
-    RowProxy operator[](size_t row);
-    const RowProxy operator[](size_t row) const;
-
-
-//Helper Function
-private:
-    void checkMatrixSize(Matrix& other);
+        void checkMatrixSize(Matrix &other);
 
 };
 #endif

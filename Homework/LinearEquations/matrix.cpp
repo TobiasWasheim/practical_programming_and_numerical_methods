@@ -140,11 +140,12 @@ Vector Matrix::operator*(Vector& other)
     }
 
     Vector result(this->cols);
-    for (int i = 0; i < this->cols; i++)
-    {
-        double sum = 0;
-        // ...
-    }
+    // for (int i = 0; i < this->cols; i++)
+    // {
+    //     double sum = 0;
+    //     // ...
+    // }
+    return result;
 }
 // Matrix addition
 Matrix Matrix::operator+=(Matrix& other)
@@ -181,6 +182,31 @@ Matrix Matrix::transpose()
         }
     }
     return result;
+}
+Matrix::RowProxy Matrix::operator[](int row) {
+    if (row >= rows) {
+        throw std::out_of_range("Matrix row index out of bounds");
+    }
+    return RowProxy(elements[row]);
+}
+
+const Matrix::RowProxy Matrix::operator[](int row) const {
+    if (row >= rows) {
+        throw std::out_of_range("Matrix row index out of bounds");
+    }
+    return RowProxy(elements[row]);
+}
+
+// Corrected RowProxy constructors
+Matrix::RowProxy::RowProxy(std::vector<double>& row) : row_(row) {}
+Matrix::RowProxy::RowProxy(const std::vector<double>& row) : row_(const_cast<std::vector<double>&>(row)) {}
+
+double& Matrix::RowProxy::operator[](int col) {
+    return row_[col];
+}
+
+double Matrix::RowProxy::operator[](int col) const {
+    return row_[col];
 }
 
 

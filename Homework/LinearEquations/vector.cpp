@@ -1,4 +1,5 @@
 #include "vector.h"
+#include "matrix.h"
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
@@ -142,27 +143,27 @@ void Vector::checkVectorSize(const Vector& other)
 
 
 // Test 
-int main() {
-    std::cout << "Test initializing 0-vector and printing it" << "\n";
-    Vector V(3);
-    V.printVector();
+// int main() {
+//     std::cout << "Test initializing 0-vector and printing it" << "\n";
+//     Vector V(3);
+//     V.printVector();
 
-    std::cout << "Test initializing vector with values and printing it" << "\n";
-    std::vector<double> values = {1.0,4.0,3.0};
-    Vector W(values);
-    W.printVector();
-    std::cout << "Test that I can print the 2nd element (4)" << "\n";
-    W.printElement(1);
-    std::cout << "Test the + operator" << "\n";
-    Vector U = W * 2;
-    U.printVector();
-    std::cout << "----" << "\n";
-    U *= 5;
-    U.printVector();
-    double num = U[1];
-    std::cout << num << "\n";
-    double num2 = U.dot(W);
-    std::cout << num2 << "\n";
-    Vector A({3,4});
-    std::cout << A.norm() << "\n";
-}
+//     std::cout << "Test initializing vector with values and printing it" << "\n";
+//     std::vector<double> values = {1.0,4.0,3.0};
+//     Vector W(values);
+//     W.printVector();
+//     std::cout << "Test that I can print the 2nd element (4)" << "\n";
+//     W.printElement(1);
+//     std::cout << "Test the + operator" << "\n";
+//     Vector U = W * 2;
+//     U.printVector();
+//     std::cout << "----" << "\n";
+//     U *= 5;
+//     U.printVector();
+//     double num = U[1];
+//     std::cout << num << "\n";
+//     double num2 = U.dot(W);
+//     std::cout << num2 << "\n";
+//     Vector A({3,4});
+//     std::cout << A.norm() << "\n";
+// }
