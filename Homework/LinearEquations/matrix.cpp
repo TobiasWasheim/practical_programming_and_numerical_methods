@@ -141,12 +141,16 @@ Vector Matrix::operator*(Vector& other)
         throw std::invalid_argument("Matrix dimensions do not match to do matrix multiplication");
     }
 
-    Vector result(this->cols);
-    // for (int i = 0; i < this->cols; i++)
-    // {
-    //     double sum = 0;
-    //     // ...
-    // }
+    Vector result(this->rows);
+    for (int i = 0; i < this->rows; i++)
+    {
+        double sum = 0;
+        for (int j = 0; j < this->cols; j++)
+        {
+            sum += this->elements[i][j] * other[j];
+        }
+        result[i] = sum;
+    }
     return result;
 }
 // Matrix addition
@@ -213,9 +217,8 @@ double Matrix::RowProxy::operator[](int col) const {
 
 int main() {
     Matrix A({{1,2},{3,4}});
-    Vector V({1,1});
+    Vector V({10,10});
     A.printMatrix();
-    std::cout << A[1][1] << "\n";
     Vector W = A * V;
-    A.printMatrix();
+    W.printVector();
 }

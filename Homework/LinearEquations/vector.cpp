@@ -73,22 +73,22 @@ Vector Vector::operator*(double scalar)
     return result;
 }
 // Matrix multiplication with a vector
-// Matrix Vector::operator*(Matrix& other)
-// {
-//     if (this->size != other.getRows()) throw std::invalid_argument("Vector and matrix do not match in size");
+Matrix Vector::operator*(Matrix& other)
+{
+    if (this->size != other.getRows()) throw std::invalid_argument("Vector and matrix do not match in size");
 
-//     Matrix result(1,other.getCols());
-//     for (int i = 0; i < other.getCols(); i++)
-//     {
-//         double sum = 0;
-//         for (int j = 0; j < this->size; j++)
-//         {
-//             sum += other[i][j] * elements[j];  
-//         }
-//         result[0][i] = sum;
-//     }
-//     return result;
-// } 
+    Matrix result(1,other.getCols());
+    for (int i = 0; i < other.getCols(); i++)
+    {
+        double sum = 0;
+        for (int j = 0; j < this->size; j++)
+        {
+            sum += other[i][j] * elements[j];  
+        }
+        result[0][i] = sum;
+    }
+    return result;
+} 
 // Vector addition 
 Vector Vector::operator+=(const Vector& other)
 {
