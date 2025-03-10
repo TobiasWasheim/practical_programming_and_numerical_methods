@@ -1,8 +1,12 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include "matrix.h"
 
+class Vector : public Matrix
+{
+
+};
 
 
 #endif
