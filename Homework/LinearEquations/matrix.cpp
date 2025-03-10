@@ -149,33 +149,26 @@ Vector Matrix::operator*(Vector& other)
 // Matrix addition
 Matrix Matrix::operator+=(Matrix& other)
 {
-
+    *this = *this + other;
+    return *this;
 }
 // Matrix subtraction
 Matrix Matrix::operator-=(Matrix& other)
 {
-
-}
-// Scalar multiplication
-Matrix Matrix::operator*=(double scalar)
-{
-
+    *this = *this - other;
+    return *this;
 }
 // Matrix Multiplication
 Matrix Matrix::operator*=(Matrix& other)
 {
-
+    *this = *this * other;
+    return *this;
 }
     // Scalar multiplication
 Matrix Matrix::operator*=(double scalar) 
 {
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; i++)
-        {
-            elements[i][j] *= scalar;
-        }
-    }
+    *this = *this * scalar;
+    return *this;
 }
 // Transpose
 Matrix Matrix::transpose() 
