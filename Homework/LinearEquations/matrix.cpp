@@ -47,8 +47,10 @@ void Matrix::printMatrix()
             printElement(i,j);
             std::cout << " ";
         }
-    }
         std::cout << "\n";
+    }
+        
+    
 }
 // Print element of Matrix
 void Matrix::printElement(int row, int col)
@@ -195,9 +197,8 @@ const Matrix::RowProxy Matrix::operator[](int row) const {
         throw std::out_of_range("Matrix row index out of bounds");
     }
     return RowProxy(elements[row]);
-}
+} 
 
-// Corrected RowProxy constructors
 Matrix::RowProxy::RowProxy(std::vector<double>& row) : row_(row) {}
 Matrix::RowProxy::RowProxy(const std::vector<double>& row) : row_(const_cast<std::vector<double>&>(row)) {}
 
@@ -212,6 +213,9 @@ double Matrix::RowProxy::operator[](int col) const {
 
 int main() {
     Matrix A({{1,2},{3,4}});
+    Vector V({1,1});
     A.printMatrix();
     std::cout << A[1][1] << "\n";
+    Vector W = A * V;
+    A.printMatrix();
 }

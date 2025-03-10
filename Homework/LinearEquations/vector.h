@@ -27,7 +27,7 @@ public:
     Vector operator-(const Vector& other);   // Vector subtraction
 
     Vector operator*(double scalar);         // Scalar multiplication
-    //Matrix operator*(Matrix& other);   // Matrix multiplication with a vector
+    Matrix operator*(Matrix& other);   // Matrix multiplication with a vector
 
     Vector operator+=(const Vector& other);
     Vector operator-=(const Vector& other);
