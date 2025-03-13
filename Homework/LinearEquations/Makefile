@@ -5,13 +5,13 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra
 
 # Source files
-VECTOR_SRC = vector.cpp
-MATRIX_SRC = matrix.cpp
+VECTOR_SRC = ../Matrix/vector.cpp
+MATRIX_SRC = ../Matrix/matrix.cpp
 QR_SRC = QR.cpp # Assuming your QR class is in qr.cpp
 
 # Header files
-VECTOR_HDR = vector.h
-MATRIX_HDR = matrix.h
+VECTOR_HDR = ../Matrix/vector.h
+MATRIX_HDR = ../Matrix/matrix.h
 
 # Object files
 VECTOR_OBJ = vector.o

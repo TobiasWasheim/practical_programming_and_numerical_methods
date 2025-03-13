@@ -1,7 +1,8 @@
-#include "vector.h"
-#include "matrix.h"
+#include "../Matrix/vector.h"
+#include "../Matrix/matrix.h"
 #include <tuple>
 #include <iostream>
+#include <stdexcept>
 
 class QR
 {
@@ -69,10 +70,40 @@ class QR
         }
         return det;
     }
-    // Matrix inverse(Matrix Q, Matrix R)
-    // {
+    Matrix inverse(Matrix A)
+    {
+        int n = A.getCols();
+        int m = A.getRows();
+        // Check if matrix A is square. else: exception.
+        if (n != m) throw std::invalid_argument("Matrix is not a square");
         
-    // }
+        // We start by doing QR-decomposition of A
+        std::vector<Matrix> qr_decomp = decomp(A);
+
+        Matrix Q = qr_decomp[0];
+        Matrix R = qr_decomp[1];
+        
+        Matrix result(n,n);
+        // We can solve for the inverse by
+        for (int i = 0; i < n; i++)
+        {
+            // we create the unit matrix
+            std::vector<double> v(n, 0.0);
+            v[i] = 1.0;
+                
+
+            // Next, we solve for the ith column of inverse A
+            Vector x = solve(Q,R,v);
+
+
+            // attach the values to the inverse matrix
+            for (int j = 0; j < n; j++)
+            {
+                result[j][i] = x[j];
+            }
+        }
+        return result;
+    }
 };
 
 int main()
@@ -107,4 +138,8 @@ int main()
     c.printVector();
     std::cout << "The determinant" << "\n";
     std::cout << qr.det(R) << "\n";
+
+    Matrix B({{1.0,2.0},{3.0,4.0}});
+    Matrix inverse = qr.inverse(B);
+    inverse.printMatrix();
 }
