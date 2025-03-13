@@ -213,12 +213,3 @@ double& Matrix::RowProxy::operator[](int col) {
 double Matrix::RowProxy::operator[](int col) const {
     return row_[col];
 }
-
-
-int main() {
-    Matrix A({{1,2},{3,4}});
-    Vector V({10,10});
-    A.printMatrix();
-    Vector W = A * V;
-    W.printVector();
-}
