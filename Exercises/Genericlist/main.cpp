@@ -1,4 +1,4 @@
-#include"../headers/GenList.h"
+#include"GenList.h"
 #include<iostream>
 #include<sstream>
 #include<iomanip>

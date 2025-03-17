@@ -1,5 +1,10 @@
+# Input and output streams
+
+# Compiler and flags
+CXX = g++
 CXXFLAGS = -std=c++23 -O0 -ffast-math
 LDLIBS = -lstdc++ -lm
+
 
 all: Out-CommandLine.txt Out-StandardInputStream.txt Out-FileStreams.txt
 
@@ -7,36 +12,36 @@ Out-CommandLine.txt: CommandLine
 	./$< -n 1 -n 2 -n 3 -n 4 -n 5 > $@
 
 Out-StandardInputStream.txt: StandardInputStream
-	echo 1 2 3 4 5 | ./$< > $@
+	echo 1 2 3 4 5 | ./$< > $@e clean
 
 Out-FileStreams.txt: FileStreams
 	./$< --input input.txt --output $@
 
 
-CommandLine: objects/CommandLine.o 
+CommandLine: CommandLine.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-objects/CommandLine.o: src/CommandLine.cpp
+CommandLine.o: CommandLine.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
-StandardInputStream: objects/StandardInputStream.o 
+StandardInputStream: StandardInputStream.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-objects/StandardInputStream.o: src/StandardInputStream.cpp
+StandardInputStream.o: StandardInputStream.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
-FileStreams: objects/FileStreams.o 
+FileStreams: FileStreams.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-objects/FileStreams.o: src/FileStreams.cpp
+FileStreams.o: FileStreams.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
 
 
 clean:
-	$(RM) [Oo]ut* CommandLine StandardInputStream FileStreams objects/*.o
+	$(RM) [Oo]ut* CommandLine StandardInputStream FileStreams *.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)

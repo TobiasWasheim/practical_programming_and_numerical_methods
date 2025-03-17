@@ -1,12 +1,13 @@
 #include <iostream>
 #include <cmath>
+#include <limits>
 #include "Machine-Epsilon.h"
 
 double machineEpsilonDouble() {
     
-    double epsilon {1.0};
-    double previous {1.0};
-    while (1.0+epsilon != 1.0) {
+    double epsilon = 1.0;
+    double previous = 1.0;
+    while ((1.0+epsilon) != 1.0) {
         previous = epsilon;
         epsilon /= 2.0;
     }
@@ -15,11 +16,11 @@ double machineEpsilonDouble() {
 
 float machineEpsilonFloat() {
     
-    float epsilon {1.0};
-    float previous {1.0};
-    while ((1.0+epsilon) != 1.0) {
+    float epsilon = 1.0f;
+    float previous = 1.0f;
+    while ((1.0+epsilon) != 1.0f) {
         previous = epsilon;
-        epsilon /= 2.0;
+        epsilon /= 2.0f;
     }
 
     return previous;
@@ -37,15 +38,17 @@ void printPart2() {
 
     std::cout << "Part 2: The Machine Epsilon" << "\n";
     std::cout << "Machine epsilon for double-precision: " << epsilonDouble << "\n";
-    std::cout << "Machine epsilon for float-precision:  " << epsilonfloat << "\n" << "\n";
+    std::cout << "Machine epsilon for double-precision (correct): " << std::numeric_limits<double>::epsilon() << "\n";
+    std::cout << "Machine epsilon for float-precision:  " << epsilonfloat << "\n" ;
+    std::cout << "Machine epsilon for double-precision (correct): " << std::numeric_limits<float>::epsilon() << "\n\n";
     // Comparisons
-    double tiny = epsilonDouble/2;
-    double a = 1 + tiny + tiny;
-    double b = tiny + tiny + 1;
+    double tiny = epsilonDouble/2.0;
+    double a = 1.0 + tiny + tiny;
+    double b = tiny + tiny + 1.0;
 
     bool equal = a == b;
-    bool aGreaterThan1 = a > 1;
-    bool bGreaterThan1 = b > 1;
+    bool aGreaterThan1 = a > 1.0;
+    bool bGreaterThan1 = b > 1.0;
 
     std::cout << "Part 3:" << "\n";
     std::cout << "a == b ? " << equal << "\n";
@@ -58,13 +61,13 @@ void printPart2() {
 }
 
 void printPart3() {
-    double tiny = machineEpsilonDouble()/2;
+    double tiny = machineEpsilonDouble()/2.0;
     double a = 1 + tiny + tiny;
-    double b = tiny + tiny + 1;
+    double b = tiny + tiny + 1.0;
 
     bool equal = a == b;
-    bool aGreaterThan1 = a > 1;
-    bool bGreaterThan1 = b > 1;
+    bool aGreaterThan1 = a > 1.0;
+    bool bGreaterThan1 = b > 1.0;
 
     std::cout << "Part 3:Tiny Epsilon" << "\n";
     std::cout << "a == b ? " << equal << "\n";

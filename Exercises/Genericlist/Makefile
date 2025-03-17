@@ -1,16 +1,31 @@
+# Make generic list
+
+# Compile and flags
+CXX = g++
 CXXFLAGS = -Wall -O3 -ffast-math
 LDLIBS = -lstdc++ -lm
-Out.txt : main
-	./main <input.txt >$@
 
-main: objects/main.o 
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
-objects/main.o: headers/GenList.h src/main.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
+# Source file
+MAIN_SRC = main.cpp
+
+# Header files
+GENLIST_HDR = GenList.h
+
+# Object file
+MAIN_OBJ = main.o
+
+# Executable name
+TARGET = main
+
+# Default target
+all: $(TARGET)
+	./main < input.txt > Out.txt
+
+$(TARGET) : $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) -o $(TARGET)
+
+$(MAIN_OBJ) : $(GENLIST_HDR) $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
 
 clean:
-	$(RM) [Oo]ut* main objects/*.o
-test:
-	@echo "CXX:" $(CXX)
-	@echo "RM:" $(RM)
-	@echo "LDFLAGS:" $(LDFLAGS)
+	rm -f Out.txt $(MAIN_OBJ) $(TARGET)

@@ -88,4 +88,9 @@ bool approx(const vec& u, const vec& v, double acc, double eps){
 std::ostream& operator<<(std::ostream& os, const vec& v){
 	os << "{ " << v.x << ", " << v.y << ", " << v.z << " } ";
 	return os;
-		}
+}
+
+std::string vec::toString()
+{
+	std::cout << "(" << x <<", " << y << ", " << ", " << z << ")" << "\n";
+}

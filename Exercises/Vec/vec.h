@@ -18,6 +18,7 @@ struct vec{
     double dot(vec&);
     void set(double a,double b,double c){x=a;y=b;z=c;}
     void print(std::string s="") const; // for debugging
+    std::string toString();
     friend std::ostream& operator<<(std::ostream&, const vec&);
 };
 vec operator-(const vec&);

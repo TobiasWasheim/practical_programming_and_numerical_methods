@@ -7,7 +7,9 @@ smallestInteger == INT32_MIN 1
 
 Part 2: The Machine Epsilon
 Machine epsilon for double-precision: 4.94066e-324
+Machine epsilon for double-precision (correct): 2.22045e-16
 Machine epsilon for float-precision:  1.4013e-45
+Machine epsilon for double-precision (correct): 1.19209e-07
 
 Part 3:
 a == b ? 1
