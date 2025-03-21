@@ -1,0 +1,4 @@
+Integral of f1 = 0.672681
+Integral of f2 = 2.01881
+Integral of f3 = 3.15286
+Integral of f4 = -4.03168
