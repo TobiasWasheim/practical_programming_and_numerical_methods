@@ -6,24 +6,24 @@ largestInteger == INT32_MAX  1
 smallestInteger == INT32_MIN 1
 
 Part 2: The Machine Epsilon
-Machine epsilon for double-precision: 4.94066e-324
+Machine epsilon for double-precision: 2.22045e-16
 Machine epsilon for double-precision (correct): 2.22045e-16
-Machine epsilon for float-precision:  1.4013e-45
-Machine epsilon for double-precision (correct): 1.19209e-07
+Machine epsilon for float-precision:  1.19209e-07
+Machine epsilon for float-precision (correct): 1.19209e-07
 
 Part 3:
-a == b ? 1
+a == b ? 0
 a > 1 ?  0
-b > 1 ?  0
+b > 1 ?  1
 
 Explanation:
 Since epsilon is the smallest representation of the value between 1.0 and the next. So
 when we define tiny as epsilon/2, the program sees tiny as equal to zero.
 
 Part 3:Tiny Epsilon
-a == b ? 1
+a == b ? 0
 a > 1 ?  0
-b > 1 ?  0
+b > 1 ?  1
 
 Explanation:
 Since epsilon is the smallest representation of the value between 1.0 and the next. So

@@ -6,24 +6,25 @@
 double machineEpsilonDouble() {
     
     double epsilon = 1.0;
-    double previous = 1.0;
-    while ((1.0+epsilon) != 1.0) {
-        previous = epsilon;
-        epsilon /= 2.0;
+    while(true){
+	    double onepe = 1.0+epsilon;
+	    if(onepe == 1.0) break;
+	    // std::cout << epsilon << " " << 1+epsilon << "\n";
+        	epsilon /= 2.0;
     }
-    return previous;
+    return epsilon*2;
 }
 
 float machineEpsilonFloat() {
     
     float epsilon = 1.0f;
     float previous = 1.0f;
-    while ((1.0+epsilon) != 1.0f) {
+    while ((1.0f+epsilon) != 1.0f) {
         previous = epsilon;
         epsilon /= 2.0f;
     }
 
-    return previous;
+    return epsilon*2.0f;
 }
 
 bool approx(double a, double b, double acc, double eps) {
@@ -40,7 +41,7 @@ void printPart2() {
     std::cout << "Machine epsilon for double-precision: " << epsilonDouble << "\n";
     std::cout << "Machine epsilon for double-precision (correct): " << std::numeric_limits<double>::epsilon() << "\n";
     std::cout << "Machine epsilon for float-precision:  " << epsilonfloat << "\n" ;
-    std::cout << "Machine epsilon for double-precision (correct): " << std::numeric_limits<float>::epsilon() << "\n\n";
+    std::cout << "Machine epsilon for float-precision (correct): " << std::numeric_limits<float>::epsilon() << "\n\n";
     // Comparisons
     double tiny = epsilonDouble/2.0;
     double a = 1.0 + tiny + tiny;

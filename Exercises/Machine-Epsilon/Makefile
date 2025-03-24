@@ -1,5 +1,9 @@
-CXXFLAGS = -std=c++23 -O0 -ffast-math
+CXXFLAGS = -std=c++20 -O0 -ffast-math
 LDLIBS = -lstdc++ -lm
+CXX = clang
+
+all: Out.txt
+
 Out.txt: main.exe
 	./main.exe > Out.txt
 main.exe: Objects/main.o Objects/Integers.o Objects/Machine-Epsilon.o
