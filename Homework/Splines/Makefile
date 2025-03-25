@@ -2,9 +2,9 @@ CXX = clang
 CXXFLAGS = -std=c++20 -O0 -ffast-math
 LDLIBS = -lstdc++ -lm
 
-all: linterp.svg
+all: plot.svg
 
-linterp.svg: linterp.txt CosineTable.txt
+plot.svg: data.txt CosineTable.txt
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "$@"; \
@@ -14,13 +14,14 @@ linterp.svg: linterp.txt CosineTable.txt
 		set ylabel "y";\
 		set title "Linear Interpolation of Cosine";\
 		plot \
-			"linterp.txt" with lines title "Linear Interpolation",\
-			"CosineTable.txt" with points pointtype 7 title "tabulated" \
+			"data.txt" every::1 using 1:2 with lines title "Linear interpolation",\
+			"data.txt"  every::1 using 1:3 with lines title "Integration",\
+			"CosineTable.txt" with points pointtype 7 title "Tabulated values" \
 	' | gnuplot
 
 
-linterp.txt: main
-	./main > linterp.txt
+data.txt: main
+	./main > data.txt
 
 
 main: main.o LinearSpline.o
@@ -33,4 +34,4 @@ LinearSpline.o: LinearSpline.cpp LinearSpline.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 clean:
-	$(RM) main.o LinearSpline.o
+	$(RM) main.o LinearSpline.o plot.svg

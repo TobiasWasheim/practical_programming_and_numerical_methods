@@ -35,7 +35,7 @@ double linterpInteg(double x[], double y[], double z, int size) {
 
     for (int j = 0; j < i; j++) {
         double dx = x[j+1] - x[j];
-        sum += dx * y[j+1];
+        sum += dx * (y[j+1]+y[j])/2.0;
     }
     return sum;
 }
