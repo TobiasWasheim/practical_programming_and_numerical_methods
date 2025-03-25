@@ -5,7 +5,6 @@
 #include "ODE_solver.h"
 #include "../Matrix/vector.h"
 
-
 class RK12 {
 
     std::vector<Vector> RK12::stepper(std::function<Vector(double, Vector)> f, double x, Vector y, double h) {
