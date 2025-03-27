@@ -22,6 +22,7 @@ std::tuple<Matrix,Matrix> decomp(Matrix A) {
         R[i][i] = v.norm();
         Vector q = v * (1.0 / R[i][i]); 
 
+        // Update k'th column of Q
         for (int k = 0; k < m; k++) {
             Q[k][i] = q[k];
         }
@@ -84,7 +85,6 @@ Matrix inverse(Matrix A) {
         // we create the unit matrix
         std::vector<double> v(n, 0.0);
         v[i] = 1.0;
-                
 
         // Next, we solve for the ith column of inverse A
         Vector x = solve(Q,R,v);

@@ -9,6 +9,7 @@ VECTOR_SRC = ../Matrix/vector.cpp
 MATRIX_SRC = ../Matrix/matrix.cpp
 QR_SRC = QR.cpp # Assuming your QR class is in qr.cpp
 MAIN_SRC = main.cpp
+TIMING_SRC = timing.cpp
 
 # Header files
 VECTOR_HDR = ../Matrix/vector.h
@@ -19,16 +20,54 @@ VECTOR_OBJ = vector.o
 MATRIX_OBJ = matrix.o
 QR_OBJ = QR.o
 MAIN_OBJ = main.o
+TIMING_OBJ = timing.o
 
 # Executable name
-TARGET = main
+MAIN = main
+TIMING = timing
+
+# Data files
+TIMING_DATA = timing.data
+
+# Plot
+PLOT = plot.svg
 
 # Default target
-all: $(TARGET)
+all: $(PLOT) $(MAIN)
 
-# Create executable
-$(TARGET): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ)
-	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $(TARGET)
+# Plot factorization O(N^3)
+$(PLOT): $(TIMING_DATA)
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "$@"; \
+		set grid;\
+		set key bottom;\
+		set xlabel "log(N)";\
+		set ylabel "Time (arb. units)";\
+		set title "Time for QR-factorization";\
+		plot \
+			"$<" using (log($$1)):(log($$2)) with lines title "Factorization"\
+	' | gnuplot
+
+# Test factorization O(N^3)
+$(TIMING_DATA): $(TIMING)
+	>$@
+	for N in $$(seq 100 20 200); do \
+		time --format "$$N %e" --output $@ --append \
+		./$(TIMING) -size:$$N 1>out 2>err ;\
+    done
+# Create executable for timing
+$(TIMING): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(TIMING_OBJ)
+	$(CXX) $(CXXFLAGS) $(TIMING_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $@
+
+# Create executable for main
+$(MAIN): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $@
+	./main > Out.txt
+
+# compile timing.cpp to timing.o
+$(TIMING_OBJ): $(TIMING_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $(TIMING_SRC) -o $@	
 
 # compile main.cpp to main.o
 $(MAIN_OBJ): $(MAIN_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
@@ -48,7 +87,7 @@ $(QR_OBJ): $(QR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
 
 # Clean object files and executable
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(TARGET) $(MAIN_OBJ)
+	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN) $(MAIN_OBJ) $(TIMING_OBJ) $(TIMING) $(PLOT) $(TIMING_DATA) err
 
 # Phony targets
 .PHONY: all clean

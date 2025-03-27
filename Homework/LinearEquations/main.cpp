@@ -1,6 +1,6 @@
 #include <tuple>
 #include <iostream>
-#include <stdexcept>
+#include<random>
 #include "../Matrix/vector.h"
 #include "../Matrix/matrix.h"
 #include "QR.h"
@@ -8,24 +8,63 @@
 
 int main()
 {
-    std::vector<std::vector<double>> matrixValues = {   {1,2,3},
-                                                        {4,5,6},
-                                                        {7,8,9},
-                                                        {1,2,3},
-                                                        {4,5,6},
-                                                        {7,8,9},
-                                                        {1,2,3},
-                                                        {4,5,6},
-                                                        {7,8,9}};
+    // Tests for part A
 
-    Matrix A(matrixValues);
-    Vector b({8.82, 0.44, 9.68, 6.78});
+    // We generate a random tall matrix (n > m)
+    int m = std::rand() % 5;
+    int n = 5 + std::rand() % 10;
 
-    std::tuple<Matrix,Matrix> qr_result = decomp(A);
-    Matrix Q = std::get<0>(qr_result);
-    Matrix R = std::get<1>(qr_result);
+    Matrix A(n,m);
 
-    Q.printMatrix();
-    std::cout << "\n\n";
+    // Now we generate the elements of the matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            A[i][j] = std::rand() % 50;
+        }
+    }
+    std::cout << "Print matrix A " << "\n";
+    A.printMatrix();
+    std::cout << "\n";
+
+
+    std::cout << "\n";
+    // Factorize A = QR
+    std::tuple<Matrix,Matrix> qr = decomp(A);
+    // Check that R is upper triangle
+    Matrix R = std::get<1>(qr);
+    std::cout << "Matrix R" << "\n";
     R.printMatrix();
+    std::cout << "\n";
+
+    // Check if Q^T Q = I
+    Matrix Q = std::get<0>(qr);
+    Matrix I = Q.transpose() * Q;
+
+    std::cout << "Print matrix I = Q^T * Q" << "\n";
+    I.printMatrix();
+    std::cout << "\n";
+
+    // Check if QR = A
+    Matrix A_new = Q * R;
+    std::cout << "Print matrix A = Q*R" << "\n";
+    A_new.printMatrix();
+    std::cout << "\n";
+
+    // Tests for part B
+    // Generate a random square matrix
+    Matrix C(n,n);
+    // Generate elements for matrix C
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = std::rand() % 50;
+        }
+    }
+    // Now we calculate the inverse of C
+    Matrix Cinv = inverse(C);
+    
+    Matrix Prod = Cinv * C;
+
+    std::cout << "Print product C^-1*C = 1" << "\n";
+
+    Prod.printMatrix();
 }
