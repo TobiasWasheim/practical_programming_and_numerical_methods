@@ -6,7 +6,7 @@
 #include"../Matrix/vector.h"
 
 
-std::vector<Vector> stepper(
+std::tuple<Vector,Vector> rkstep12(
                             std::function<Vector(double, Vector)> f, 
                             double x, 
                             Vector y, 
@@ -14,22 +14,22 @@ std::vector<Vector> stepper(
                         ) {
 
     Vector k0 = f(x,y);
-    Vector k1 = f((x+h)*0.5,y+k0 * h * 0.5);
-    Vector yh = y + k1*h;
-    Vector dy = (k1-k0) * h;
+    Vector k1 = f((x + h) * 0.5,y + k0 * h * 0.5);
+    Vector yh = y + k1 * h;
+    Vector dy = (k1 - k0) * h;
         
-    std::vector<Vector> result{yh, dy};
-    return result;
+    return std::make_tuple(yh,dy);
 }
 
-std::tuple<Vector,Vector> driver(
+
+std::tuple<Vector,std::vector<Vector>> driver(
                                     std::function<Vector(double, Vector)> f, 
                                     double a, 
                                     Vector ya, 
                                     double b, 
-                                    double h=0.125, 
-                                    double acc=0.01, 
-                                    double eps=0.01
+                                    double h, 
+                                    double acc, 
+                                    double eps
                                 ) {
     double x = a;
     Vector y = ya;
@@ -45,9 +45,9 @@ std::tuple<Vector,Vector> driver(
             x = b - h;
         }
 
-        std::vector<Vector> ys = stepper(f,x,y,h);
-        Vector yh = ys[0];
-        Vector dy = ys[1];
+        std::tuple<Vector,Vector> ys = rkstep12(f,x,y,h);
+        Vector yh = std::get<0>(ys);
+        Vector dy = std::get<1>(ys);
             
         double tolerance = (acc + yh.norm() * eps) * std::sqrt(h/(b-a));
         double error = dy.norm();
