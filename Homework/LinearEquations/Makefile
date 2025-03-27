@@ -8,6 +8,7 @@ CXXFLAGS = -std=c++11 -Wall -Wextra
 VECTOR_SRC = ../Matrix/vector.cpp
 MATRIX_SRC = ../Matrix/matrix.cpp
 QR_SRC = QR.cpp # Assuming your QR class is in qr.cpp
+MAIN_SRC = main.cpp
 
 # Header files
 VECTOR_HDR = ../Matrix/vector.h
@@ -17,6 +18,7 @@ MATRIX_HDR = ../Matrix/matrix.h
 VECTOR_OBJ = vector.o
 MATRIX_OBJ = matrix.o
 QR_OBJ = QR.o
+MAIN_OBJ = main.o
 
 # Executable name
 TARGET = main
@@ -25,8 +27,12 @@ TARGET = main
 all: $(TARGET)
 
 # Create executable
-$(TARGET): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ)
-	$(CXX) $(CXXFLAGS) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $(TARGET)
+$(TARGET): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $(TARGET)
+
+# compile main.cpp to main.o
+$(MAIN_OBJ): $(MAIN_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $@	
 
 # Compile vector.cpp to vector.o
 $(VECTOR_OBJ): $(VECTOR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
@@ -42,7 +48,7 @@ $(QR_OBJ): $(QR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
 
 # Clean object files and executable
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(TARGET)
+	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(TARGET) $(MAIN_OBJ)
 
 # Phony targets
 .PHONY: all clean

@@ -30,7 +30,7 @@ int Matrix::getCols()
 // Get the i'th vector column
 Vector Matrix::getColumn(int colIndex)
 {
-    Vector result(this->cols);
+    Vector result(this->rows);
     for (int i = 0; i < result.getSize(); i++)
     {
         result[i] = this->elements[i][colIndex];

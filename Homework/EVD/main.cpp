@@ -13,7 +13,7 @@ int main() {
 
     for (int i = 0; i < size; i++) {
         for (int j = i; j < size; j++) {
-            int random = rand() % 101;
+            double random = (rand() % 101)/100.0;
             
             M[i][j] = random;
             M[j][i] = random;
