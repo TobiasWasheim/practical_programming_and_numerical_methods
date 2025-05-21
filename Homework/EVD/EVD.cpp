@@ -1,55 +1,61 @@
 #include<cmath>
-#include"../Matrix/matrix.h"
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 #include<stdexcept>
 #include"EVD.h"
 
 
 
 
-void timesJ(Matrix& A, int p, int q, double theta) {
+void timesJ(matrix& A, int p, int q, double theta) {
     double c = cos(theta);
     double s = sin(theta);
 
-    for (int i = 0; i < A.getRows(); i ++) {
-        double aip = A[i][p];
-        double aiq = A[i][q];
+    for (int i = 0; i < A.rows(); i ++) {
+        double aip = A(i,p);
+        double aiq = A(i,q);
 
-        A[i][p] = c * aip - s * aiq;
-        A[i][q] = s * aip + c * aiq;
+        A(i,p) = c * aip - s * aiq;
+        A(i,q) = s * aip + c * aiq;
     }
 }
 
-void Jtimes(Matrix& A, int p, int q, double theta) {
+void Jtimes(matrix& A, int p, int q, double theta) {
     double c = cos(theta);
     double s = sin(theta);
 
-    for (int i = 0; i < A.getRows(); i++) {
-        double api = A[p][i];
-        double aqi = A[q][i];
+    for (int i = 0; i < A.rows(); i++) {
+        double api = A(p,i);
+        double aqi = A(q,i);
 
-        A[p][i] = c * api + s * aqi;
-        A[q][i] = -s* api + c * aqi;
+        A(p,i) = c * api + s * aqi;
+        A(q,i) = -s* api + c * aqi;
     }
 }
 
-void cyclic(Matrix& A) {
+std::tuple<colVector,matrix> cyclic(matrix A) {
+
+    int m = A.rows();
+    int n = A.cols();
+
+    colVector W(n);
+    matrix V = id(n);
 
     try {
-        if (A.getCols() != A.getRows()) {
+        if (n != m) {
             throw new std::invalid_argument("Matrix the same dimension");
         }
     } catch(int num) {
 
     }
 
-    int n = A.getCols();
+    // Make a copy of matricies
+
     bool changed;
     do {
         changed=false;
         for(int p=0;p<n-1;p++) {
             for(int q=p+1;q<n;q++){
-                double apq=A[p][q], app=A[p][p], aqq=A[q][q];
+                double apq=A(p,q), app=A(p,p), aqq=A(q,q);
                 double theta=0.5*std::atan2(2*apq,aqq-app);
                 double c=std::cos(theta), s=std::sin(theta);
                 double new_app=c*c*app-2*s*c*apq+s*s*aqq;
@@ -59,8 +65,32 @@ void cyclic(Matrix& A) {
                     changed=true;
                     timesJ(A,p,q, theta); // A←A*J 
                     Jtimes(A,p,q, -theta); // A←JT*A 
+                    timesJ(V,p,q, theta);
                 }
             }
         }
     }while(changed);
+
+    
+
+    for (int i = 0; i < n; i++) {
+        W[i] = A(i,i);
+    }
+    return std::make_tuple(W,V);
 }
+
+std::tuple<matrix,matrix> ComputeDiagonalAndOrthogonalMatrix(matrix A) {
+    
+    std::tuple<colVector,matrix> cyclicM = cyclic(A);
+    colVector eigenvalues = std::get<0>(cyclicM);
+    matrix eigenvectors = std::get<1>(cyclicM);
+
+    int eigenvaluesVectorSize = eigenvalues.size();
+    matrix diagonalMatrix(eigenvaluesVectorSize,eigenvaluesVectorSize);
+    for (int i = 0; i < eigenvaluesVectorSize; i++) {
+        diagonalMatrix(i,i) = eigenvalues[i];
+    }
+
+    return std::make_tuple(diagonalMatrix,eigenvectors);
+
+ }

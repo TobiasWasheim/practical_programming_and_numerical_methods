@@ -21,13 +21,10 @@ double sgamma(double x)
     return exp(lnsgamma);        
 }
 
-void table() 
+double lngamma(double x)
 {
-    std::cout << "n     Γ(n)" << "\n";
-    std::cout << "=============" << "\n";
-    
-    for (int i = 1; i <= 10; i++)
-    {
-        std::cout << std::setw(i) << "     " << fgamma(i) << "\n";
-    }
+    if (x <= 0) return std::nan("");
+    if (x < 9) return lngamma(x+1) - std::log(x);
+
+    return log(2*M_PI)/2+(x-0.5)*std::log(x)-x +(1.0/12)/x-(1.0/360)/pow(x,3)+(1.0/1260)/pow(x,5);
 }

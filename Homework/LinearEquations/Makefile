@@ -1,45 +1,56 @@
-# Makefile for Vector, Matrix, and QR classes
+# Makefile for Matrix, and QR classes
 
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++20 -Wall -Wextra
+
+
+
 
 # Source files
-VECTOR_SRC = ../Matrix/vector.cpp
-MATRIX_SRC = ../Matrix/matrix.cpp
-QR_SRC = QR.cpp # Assuming your QR class is in qr.cpp
-MAIN_SRC = main.cpp
+QR_SRC = QR.cpp
+MATRIX_SRC = ../../Matrix/matrix.cpp
 TIMING_SRC = timing.cpp
-
-# Header files
-VECTOR_HDR = ../Matrix/vector.h
-MATRIX_HDR = ../Matrix/matrix.h
+PART_A_SRC = partA.cpp
+PART_B_SRC = partB.cpp
+PART_C_SRC = partC.cpp
 
 # Object files
-VECTOR_OBJ = vector.o
-MATRIX_OBJ = matrix.o
-QR_OBJ = QR.o
-MAIN_OBJ = main.o
-TIMING_OBJ = timing.o
+MATRIX_OBJ = obj/matrix.o
+TIMING_OBJ = obj/timing.o
+QR_OBJ = obj/QR.o
+PART_A_OBJ = obj/partA.o
+PART_B_OBJ = obj/partB.o
+PART_C_OBJ = obj/partC.o
 
-# Executable name
-MAIN = main
-TIMING = timing
+# Header files
+QR_HDR = QR.h
+MATRIX_HDR = ../../Matrix/matrix.h
 
-# Data files
-TIMING_DATA = timing.data
 
-# Plot
-PLOT = plot.svg
+# Targets
+PART_A_TARGET = exe/partA
+PART_B_TARGET = exe/partB
+PART_C_TARGET = exe/partC
+TIMING_TARGET = exe/timing
 
-# Default target
-all: $(PLOT) $(MAIN)
+
+
 
 # Plot factorization O(N^3)
-$(PLOT): $(TIMING_DATA)
+all: folders $(PART_A_TARGET) $(PART_B_TARGET) $(PART_C_TARGET) plot.svg
+	./$(PART_A_TARGET) > output.txt
+	./$(PART_B_TARGET) >> output.txt
+	./$(PART_C_TARGET) >> output.txt
+folders:
+	mkdir -p plots
+	mkdir -p exe
+	mkdir -p obj
+
+plot.svg: timing.data
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
 		set grid;\
 		set key bottom;\
 		set xlabel "log(N)";\
@@ -49,45 +60,52 @@ $(PLOT): $(TIMING_DATA)
 			"$<" using (log($$1)):(log($$2)) with lines title "Factorization"\
 	' | gnuplot
 
+
 # Test factorization O(N^3)
-$(TIMING_DATA): $(TIMING)
+timing.data: $(TIMING_TARGET)
 	>$@
-	for N in $$(seq 100 20 200); do \
+	for N in $$(seq 100 20 400); do \
 		time --format "$$N %e" --output $@ --append \
-		./$(TIMING) -size:$$N 1>out 2>err ;\
+		./$(TIMING_TARGET) -size:$$N 1>exe/out 2>exe/err ;\
     done
-# Create executable for timing
-$(TIMING): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(TIMING_OBJ)
-	$(CXX) $(CXXFLAGS) $(TIMING_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $@
 
-# Create executable for main
-$(MAIN): $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ)
-	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) -o $@
-	./main > Out.txt
 
-# compile timing.cpp to timing.o
-$(TIMING_OBJ): $(TIMING_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(TIMING_SRC) -o $@	
 
-# compile main.cpp to main.o
-$(MAIN_OBJ): $(MAIN_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $@	
+$(PART_A_TARGET): $(PART_A_OBJ) $(MATRIX_OBJ) $(QR_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compile vector.cpp to vector.o
-$(VECTOR_OBJ): $(VECTOR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(VECTOR_SRC) -o $(VECTOR_OBJ)
+$(PART_B_TARGET): $(PART_B_OBJ) $(MATRIX_OBJ) $(QR_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compile matrix.cpp to matrix.o
-$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR) $(VECTOR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MATRIX_SRC) -o $(MATRIX_OBJ)
+$(PART_C_TARGET): $(PART_C_OBJ) $(MATRIX_OBJ) $(QR_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compile qr.cpp to qr.o
-$(QR_OBJ): $(QR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(QR_SRC) -o $(QR_OBJ)
+$(TIMING_TARGET): $(MATRIX_OBJ) $(QR_OBJ) $(TIMING_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Clean object files and executable
+
+
+
+$(TIMING_OBJ): $(TIMING_SRC) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@	
+
+$(PART_A_OBJ): $(PART_A_SRC) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(PART_B_OBJ): $(PART_B_SRC) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(PART_C_OBJ): $(PART_C_SRC) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(QR_OBJ): $(QR_SRC) $(QR_HDR) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN) $(MAIN_OBJ) $(TIMING_OBJ) $(TIMING) $(PLOT) $(TIMING_DATA) err
-
-# Phony targets
+	rm -f matrix.o timing.o main.o timing.data QR.o plot.svg out.txt output.txt main timing out err partAoutput.txt partBoutput.txt partA partB
+	@rm -rf exe obj plots txt
 .PHONY: all clean

@@ -1,0 +1,43 @@
+-------------------------------------------
+Homework: Linear Equations - part A
+-------------------------------------------
+
+In part A we check that the methods decomp(matrix A) and solve(matrix Q, matrix R, colVector b) works as intended.
+To check that the method decomp(matrix A) works we do as following
+  - generate a random tall mxn matrix A where m > n.  - check that R is upper triangular
+  - check that Q^T * Q = I
+  - check that Q * R = A
+
+Test: R is upper triangular   - status: true
+Test: That I = Q^T * Q        - status: true
+Test: That A = Q * R          - status: true
+
+
+To check that the method solve(matrix Q, matrix R, colVector b) works as intended we do the following:
+  - generate a random 10x10 square matrix A
+  - generate a random 1x10 column vector b
+  - factorize A into QR
+  - solve QRx = b
+  - check that Ax = b
+
+Test: check that Ax = b       - status: true
+
+-------------------------------------------
+Homework: Linear Equations - part B
+-------------------------------------------
+
+In part B we check that the method inverse(matrix A) for a square matrix works. We do the following:
+  - Generate a random 10x10 square matrix A
+  - Factorize A into QR
+  - Calculate the inverse A^-1 = B
+  - Check that A * B = I
+
+Test: R is upper triangular   - status: true
+-------------------------------------------
+Homework: Linear Equations - part C
+-------------------------------------------
+
+In part C we measure the time it takes to QR factorize a NxN matrix and show that it is proportional to O(N^3).
+To do so we have plotted the QR factorization for NxN matricies. Here we can see that at log(N) = 5, log(Time) = -3
+and at log(N) = 6, log(Time) = 0. So we can estimate that the slope of log(Time) = a * log(N) is a = 3. Therefor it
+goes as O(N^3).

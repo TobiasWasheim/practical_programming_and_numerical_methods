@@ -5,27 +5,17 @@ CXX = g++
 CXXFLAGS = -Wall -O3 -ffast-math
 LDLIBS = -lstdc++ -lm
 
-# Source file
-MAIN_SRC = main.cpp
 
-# Header files
-GENLIST_HDR = GenList.h
+all: output
 
-# Object file
-MAIN_OBJ = main.o
+output:
+	./main < input.txt > output.txt
 
-# Executable name
-TARGET = main
-
-# Default target
-all: $(TARGET)
-	./main < input.txt > Out.txt
-
-$(TARGET) : $(MAIN_OBJ)
+main : main.o
 	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) -o $(TARGET)
 
-$(MAIN_OBJ) : $(GENLIST_HDR) $(MAIN_SRC)
+main.o : GenList.h main.cpp
 	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
 
 clean:
-	rm -f Out.txt $(MAIN_OBJ) $(TARGET)
+	rm -f output.txt main.o main

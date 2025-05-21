@@ -1,36 +1,29 @@
+#include"../../Matrix/matrix.h"
 #include<tuple>
 #include<iostream>
 #include<iostream>
 #include<stdexcept>
-#include"../Matrix/vector.h"
-#include"../Matrix/matrix.h"
 
 
-std::tuple<Matrix,Matrix> decomp(Matrix A) {
-    int m = A.getRows();
-    int n = A.getCols();
-    Matrix Q(m, n);
-    Matrix R(n, n);
+
+std::tuple<matrix,matrix> decomp(matrix A) {
+    int n = A.cols();
+    matrix Q = A;
+    matrix R(n, n);
 
     for (int i = 0; i < n; i++) {
-        Vector v = A.getColumn(i);
-            
-        for (int j = 0; j < i; j++) {
-            R[j][i] = Q.getColumn(j).dot(A.getColumn(i));
-            v -= Q.getColumn(j) * R[j][i];
-        }
-        R[i][i] = v.norm();
-        Vector q = v * (1.0 / R[i][i]); 
-
-        // Update k'th column of Q
-        for (int k = 0; k < m; k++) {
-            Q[k][i] = q[k];
-        }
+        R(i,i) = norm(Q.col(i));
+        Q.col(i) = Q.col(i)/R(i,i);
+        
+        for (int j = i + 1; j < n; j++) {
+            R(i,j) = dot(Q.col(i),Q.col(j));
+            Q.col(j) = Q.col(j) - Q.col(i) * R(i,j);
+        }  
     }
     return std::make_tuple(Q,R);
 }
 
-Vector solve(Matrix Q, Matrix R, Vector b) {
+colVector solve(matrix Q, matrix R, colVector b) {
     /*
      Given a system of linear equations Q R x = b
      we can rewrite it R x = Q^T b and back-
@@ -39,47 +32,47 @@ Vector solve(Matrix Q, Matrix R, Vector b) {
 
     // We start by calculating Q^T b
 
-    Vector c = Q.transpose() * b;
+    colVector c = transpose(Q) * b;
 
     // Next, we implement the back-substitution algorithm
 
-    for (int i = c.getSize()-1; i >= 0; i--) {
+    for (int i = c.size()-1; i >= 0; i--) {
         double sum = 0.0;
         
-        for (int k = i+1; k < c.getSize(); k++) {
-            sum += R[i][k] * c[k];
+        for (int k = i+1; k < c.size(); k++) {
+            sum += R(i,k) * c[k];
         }
-        c[i] = (c[i] - sum)/R[i][i];
+        c[i] = (c[i] - sum)/R(i,i);
     }
 
     return c;
 }
 
-double det(Matrix R) {
+double det(matrix R) {
     /*
         The determinant can be calculated from the upper right triangle as the
         product of the diagonal of R
     */
     double det = 1;
-    for (int i = 0; i < R.getCols(); i++) {
-        det *= R[i][i];
+    for (int i = 0; i < R.cols(); i++) {
+        det *= R(i,i);
     }
     return det;
 }
 
-Matrix inverse(Matrix A) {
-    int n = A.getCols();
-    int m = A.getRows();
+matrix inverse(matrix A) {
+    int n = A.cols();
+    int m = A.rows();
     // Check if matrix A is square. else: exception.
     if (n != m) throw std::invalid_argument("Matrix is not a square");
         
     // We start by doing QR-decomposition of A
-    std::tuple<Matrix,Matrix> qr_decomp = decomp(A);
+    std::tuple<matrix,matrix> qr_decomp = decomp(A);
 
-    Matrix Q = std::get<0>(qr_decomp);
-    Matrix R = std::get<1>(qr_decomp);
+    matrix Q = std::get<0>(qr_decomp);
+    matrix R = std::get<1>(qr_decomp);
         
-    Matrix result(n,n);
+    matrix result(n,n);
     // We can solve for the inverse by
     for (int i = 0; i < n; i++) {
         // we create the unit matrix
@@ -87,11 +80,11 @@ Matrix inverse(Matrix A) {
         v[i] = 1.0;
 
         // Next, we solve for the ith column of inverse A
-        Vector x = solve(Q,R,v);
+        colVector x = solve(Q,R,v);
 
         // attach the values to the inverse matrix
         for (int j = 0; j < n; j++) {
-            result[j][i] = x[j];
+            result(j,i) = x[j];
         }
     }
     return result;

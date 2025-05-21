@@ -1,8 +1,11 @@
 #ifndef OLSFit_H
 #define OLSFit_H
 #include<functional>
-#include"../Matrix/vector.h"
+#include<tuple>
+#include"../../Matrix/matrix.h"
 
-Vector lsfit(std::function<double(double)> fs[], Vector x, Vector y, Vector dy, int size);
+
+std::tuple<colVector,matrix> lsfit(std::function<double(double)> fs[], colVector x, colVector y, colVector dy, int size);
+
 
 #endif

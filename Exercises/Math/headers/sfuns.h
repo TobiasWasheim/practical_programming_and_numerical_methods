@@ -2,5 +2,6 @@
 #define HAVE_SFUNS_H
 double fgamma(double x);
 double sgamma(double x);
-void table();
+double lngamma(double x);
+
 #endif

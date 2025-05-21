@@ -19,7 +19,7 @@ HELLO_OBJ = hello.o
 TARGET = main
 
 all: $(TARGET) 
-	./main > Out.txt
+	./main > output.txt
 
 $(TARGET) : $(MAIN_OBJ) $(HELLO_OBJ)
 	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) $(HELLO_OBJ) -o $(TARGET)
@@ -30,5 +30,5 @@ $(MAIN_OBJ) : $(MAIN_SRC) $(HELLO_HDR)
 $(HELLO_OBJ) : $(HELLO_SRC) $(HELLO_HDR)
 	$(CXX) $(CXXFLAGS) -c $(HELLO_SRC) -o $(HELLO_OBJ)
 clean:
-	rm -f Out.txt $(MAIN_OBJ) $(HELLO_OBJ) $(TARGET)
+	rm -f output.txt $(MAIN_OBJ) $(HELLO_OBJ) $(TARGET)
 

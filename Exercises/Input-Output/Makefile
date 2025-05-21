@@ -6,42 +6,46 @@ CXXFLAGS = -std=c++23 -O0 -ffast-math
 LDLIBS = -lstdc++ -lm
 
 
-all: Out-CommandLine.txt Out-StandardInputStream.txt Out-FileStreams.txt
+all: output output/Out-CommandLine.txt output/Out-StandardInputStream.txt output/Out-FileStreams.txt
 
-Out-CommandLine.txt: CommandLine
+
+output/Out-CommandLine.txt: CommandLine
 	./$< -n 1 -n 2 -n 3 -n 4 -n 5 > $@
 
-Out-StandardInputStream.txt: StandardInputStream
-	echo 1 2 3 4 5 | ./$< > $@e clean
+output/Out-StandardInputStream.txt: StandardInputStream
+	echo 1 2 3 4 5 | ./$< > $@ clean
 
-Out-FileStreams.txt: FileStreams
+output/Out-FileStreams.txt: FileStreams
 	./$< --input input.txt --output $@
 
+output:
+	mkdir output
 
-CommandLine: CommandLine.o 
+CommandLine: objects/CommandLine.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-CommandLine.o: CommandLine.cpp
+objects/CommandLine.o: src/CommandLine.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
-StandardInputStream: StandardInputStream.o 
+StandardInputStream: objects/StandardInputStream.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-StandardInputStream.o: StandardInputStream.cpp
+objects/StandardInputStream.o: src/StandardInputStream.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
-FileStreams: FileStreams.o 
+FileStreams: objects/FileStreams.o 
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-FileStreams.o: FileStreams.cpp
+objects/FileStreams.o: src/FileStreams.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
 
 
 clean:
-	$(RM) [Oo]ut* CommandLine StandardInputStream FileStreams *.o
+	$(RM) CommandLine StandardInputStream FileStreams objects/*.o
+	rm -r output
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)

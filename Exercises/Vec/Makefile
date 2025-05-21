@@ -1,20 +1,20 @@
 CXXFLAGS += -Wall -std=c++23 #-ferror-limit=1 
 LDLIBS += -lstdc++ -lm
 
-Out.txt: main
+output.txt: main
 	./$< > $@
 
-main: main.o vec.o
+main: objects/main.o objects/vec.o
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-vec.o: vec.h vec.cpp
+objects/vec.o: headers/vec.h src/vec.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
-main.o: vec.h main.cpp
+objects/main.o: headers/vec.h src/main.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
 clean:
-	$(RM) [Oo]ut* main *.o
+	$(RM) output.txt main objects/*.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)

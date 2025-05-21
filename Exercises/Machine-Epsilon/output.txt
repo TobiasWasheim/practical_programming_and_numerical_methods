@@ -1,0 +1,31 @@
+Part 1: Maximum/Minimum representable Integers
+Largest Integer = 2147483647
+Smallest Integer = -2147483648
+
+The largest integer we have calculated is the largest 32-bit integer that is possible.
+The smallest integer we have calculated is the smallest 32-bit integer that is possible.
+
+Part 2: The Machine Epsilon
+Machine epsilon for double-precision: 2.22045e-16  The correct value: 2.22045e-16
+Machine epsilon for float-precision:  1.19209e-07  The correct value: 1.19209e-07
+
+Part 3:
+a == b ? 0
+a > 1 ?  0
+b > 1 ?  1
+
+Explanation:
+Since epsilon is the smallest representation of the value between 1.0 and the next. So
+when   we define tiny as epsilon/2, the program sees tiny as equal to zero.
+
+Part 3:Tiny Epsilon
+a == b is not true
+a > 1 is not true
+b > 1 is true
+
+Explanation:
+Since epsilon is the smallest representation of the value between 1.0 and the next. So
+when adding epsilon/2 to 1.0, the program considers that as equal to 1.0
+
+Part 4: Comparing Doubles
+d1 and d2 are equal

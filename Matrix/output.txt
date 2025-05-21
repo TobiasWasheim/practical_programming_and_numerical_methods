@@ -1,0 +1,25 @@
+Test: Creation of vector - success.
+Test: Addition of row vectors - success.
+Test: Addition of row vectors - success.
+Test: Addition of row vectors - success.
+Test: Addition of col vectors - success.
+Test: Addition of col vectors - success.
+Test: Addition of col vectors - success.
+Test: Creation of matrix with values and as default- success.
+Test: Addition of matricies - success.
+Test: Subtraction of matricies - success.
+Test: Matrix product - sucess.
+Test: Division of a matrix and a number - sucess.
+Test: matrix product for vectors - success.
+Test: Outer product - success.
+Test: Dot product - success.
+Test: colVector scalar multiplication - success.
+Test: colVector scalar multiplication - success.
+Test: Transpose of vector - success.
+Test: norm of vector - success.
+Test: Matrix scalar multiplication - success.
+Test: Matrix multiplication with a col vector - success.
+Test: Matrix multiplication with a row vector - success.
+Test: Matrix comparison - success.
+
+23/23 tests ran successfully.

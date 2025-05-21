@@ -1,5 +1,5 @@
 ln(a): 142.404
-lambda: 0.170624
+lambda: 0.170624 plus-minus 0.00121944
 Half-life value of ThX: 4.06242 days
 Correct half-life: 3.66 days
 0 142.404
