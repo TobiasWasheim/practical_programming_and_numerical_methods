@@ -1,35 +1,46 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++11
+CXXFLAGS = -std=c++20
 
 # Source files
 MATRIX_SRC = ../../Matrix/matrix.cpp
 QR_SRC = ../LinearEquations/QR.cpp
-MC_SRC = OLSFit.cpp # Assuming your QR class is in EVD.cpp
-MAIN_SRC = main.cpp # Add main.cpp
+OLS_SRC = OLS.cpp 
+MAIN_SRC = main.cpp
+THX_SRC = thx.cpp
 
 # Header files
 MATRIX_HDR = ../../Matrix/matrix.h
 QR_HDR = ../LinearEquations/QR.h
+OLS_HDR = OLS.h
 
 # Object files
 MATRIX_OBJ = obj/matrix.o
 QR_OBJ = obj/QR.o
-MC_OBJ = obj/OLSFit.o
-MAIN_OBJ = obj/main.o # Add main.o
+OLS_OBJ = obj/OLS.o
+MAIN_OBJ = obj/main.o 
+THX_OBJ = obj/thx.o
 
 # Executable name
-TARGET = main
+MAIN = exe/main
+THX = exe/thx
 
 # Default target
-all: folder plot.svg
+all: folder files plot.svg
 
+# Create folders
 folder:
 	mkdir -p exe
 	mkdir -p obj
 	mkdir -p plots
 
-plot.svg: fit.txt
+# Create data and output files
+files: $(MAIN) $(THX)
+	./$(MAIN) > output.txt
+	./$(THX) > data/fit.txt
+
+# Create plot
+plot.svg: data/fit.txt
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "plots/$@"; \
@@ -39,35 +50,42 @@ plot.svg: fit.txt
 		set ylabel "Activity (relative units)";\
 		set title "Decay of ThX";\
 		plot \
-			"fit.txt" every::4 using 1:2 with lines title "Fit",\
-			"DecayData.txt" every::1 using 1:2:3 with yerrorbars title "Experimental data" \
+			"data/fit.txt" using 1:2 with lines title "Fit",\
+			"data/DecayData.txt" every::1 using 1:2:3 with yerrorbars title "Experimental data" \
 	' | gnuplot
 
-fit.txt: main
-	./main > fit.txt
 
-# Create executable
-$(TARGET): $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) $(QR_OBJ) # Add main.o
-	$(CXX) $(CXXFLAGS) $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) $(QR_OBJ) -o $@
-# Compile main
-$(MAIN_OBJ): $(MAIN_SRC) $(MATRIX_HDR) # Correct dependencies
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
+# Executable for main
+$(MAIN): $(MAIN_OBJ) $(OLS_OBJ) $(QR_OBJ) $(MATRIX_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compile QR.cpp to QR.o
-$(QR_OBJ): $(QR_SRC) $(QR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(QR_SRC) -o $(QR_OBJ)
+# Executable for thx
+$(THX): $(THX_OBJ) $(OLS_OBJ) $(QR_OBJ) $(MATRIX_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compile matrix.cpp to matrix.o
-$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR) $(VECTOR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MATRIX_SRC) -o $@
+# Object file for main
+$(MAIN_OBJ): $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
-# Compile EVD.cpp to EVD.o
-$(MC_OBJ): $(MC_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MC_SRC) -o $(MC_OBJ)
+# Object file for thx
+$(THX_OBJ): $(THX_SRC) 
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
+
+# Object file for ordinary least square fit method
+$(OLS_OBJ): $(OLS_SRC) 
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
+
+# Object file for matrix
+$(MATRIX_OBJ): $(MATRIX_SRC)  
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
+
+# object file for QR-decomposition
+$(QR_OBJ): $(QR_SRC) 
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 # Clean object files and executable
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) $(TARGET) 
+	rm -f $(MAIN) $(THX) output.txt 
 	@rm -rf exe obj plots
 
 # Phony targets
