@@ -2,8 +2,8 @@
 #include<vector>
 #include<tuple>
 #include<functional>
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 
-std::tuple<Vector,std::vector<Vector>> driver(std::function<Vector(double, Vector)> f, double a, Vector ya, double b, double h=0.125, double acc=0.01, double eps=0.01);
+std::tuple<colVector,std::vector<colVector>> driver(std::function<colVector(double, colVector)> f, double a, colVector ya, double b, double h=0.125, double acc=0.01, double eps=0.01);
 
-std::tuple<Vector,Vector> rkstep12(std::function<Vector(double, Vector)> f, double x, Vector y, double h);
+std::tuple<colVector,colVector> rkstep12(std::function<colVector(double, colVector)> f, double x, colVector y, double h);

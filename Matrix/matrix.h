@@ -18,6 +18,7 @@ public:
     /*Return size of vector*/
     int size();
     double& operator[](int index);
+    void print();
 };
 
 class rowVector : public vector {

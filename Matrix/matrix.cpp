@@ -10,6 +10,12 @@ int vector::size() {
     return elements.size();
 }
 
+void vector::print() {
+    for (int i = 0; i < elements.size(); i++) {
+        std::cout << elements.at(i) << "\n";
+    }
+}
+
 double& vector::operator[](int index) {
     return elements[index];
 }
@@ -54,7 +60,7 @@ bool compare(vector a, vector b, double acc) {
     assert(a.size() == b.size());
     
     for (int i = 0; i < a.size(); i++) {
-        if (abs(a[i] - b[i]) > acc) {
+        if (std::abs(a[i] - b[i]) > acc) {
             return false;
         }
     }

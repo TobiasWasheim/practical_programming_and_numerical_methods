@@ -1,0 +1,20 @@
+-------------------------------------------
+Homework: Splines - part A
+-------------------------------------------
+
+In part A, I have implemented the interpolation
+ for the linear spline and the integral.
+To see that it works I have plotted the function
+and its integral for
+
+f(x) = cos(x)
+
+Which can be seen  at 'plots/lspline.svg'
+
+-------------------------------------------
+Homework: Splines - part B
+-------------------------------------------
+
+In part B the quadratic spline has been implemented.
+To see that it works I have plotted the same
+function as for part A. It can be seen at 'plots/qspline.svg

@@ -84,7 +84,7 @@ rmax.svg: $(PART_B_OUTPUT)
 # Create main executable
 $(TARGET): $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ) 
 	$(CXX) $(CXXFLAGS) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ) -o $@
-	./$@ > $(PART_A_OUTPUT)
+	./$@ > output.txt
 
 
 # Create hydrogenAtom executable

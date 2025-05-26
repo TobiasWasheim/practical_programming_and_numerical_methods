@@ -1,0 +1,24 @@
+-------------------------------------------
+Homework: ODE - part A
+-------------------------------------------
+
+In part A of this homework I have implemented a
+stepper (RK12) and a driver with adaptive step-
+size. In order to show that it works, I have 
+solved the ODE u'' = -u with initial conditions
+u(0) = 1 and u'(0) = 0. It can be seen at the
+location plots/HarmonicOscillator.svg/
+
+
+-------------------------------------------
+Homework: ODE - part B
+-------------------------------------------
+
+In part B I have solved the equatorial equation
+from GR for motion around a star. I have plotted
+three cases:
+  - conditions ε = 0, u(0) = 1, u'(0) = 0
+  - conditions ε = 0, u(0) = 1, u'(0) = -0.5
+  - conditions ε = 0.01, u(0) = 1, u'(0) = -0.5
+
+The plots can be seen in the folder plots/.

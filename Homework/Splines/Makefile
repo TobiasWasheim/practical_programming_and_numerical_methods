@@ -1,37 +1,91 @@
+# Compilers and flags
 CXX = clang
 CXXFLAGS = -std=c++20 -O0 -ffast-math
 LDLIBS = -lstdc++ -lm
 
-all: plot.svg
+# Source files
+MAIN_SRC = main.cpp
+DATA_SRC = data.cpp
+SPLINE_SRC = spline.cpp
 
-plot.svg: data.txt CosineTable.txt
+
+# Object files
+MAIN_OBJ = obj/main.o
+DATA_OBJ = obj/data.o
+SPLINE_OBJ = obj/spline.o
+
+
+# Executable files
+MAIN = exe/main
+DATA = exe/data
+
+all: folders $(MAIN) $(DATA) lspline.svg qspline.svg
+
+folders:
+	mkdir -p exe
+	mkdir -p obj
+	mkdir -p plots
+	mkdir -p data
+
+lspline.svg: data.txt
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
+		set grid; \
+		set key bottom; \
+		set xlabel "x"; \
+		set ylabel "y"; \
+		set title "Linear Interpolation of Cosine"; \
+		plot \
+			sin(x) with points, \
+			cos(x) with points, \
+			"data.txt" every :::0::0 using 1:2 with lines title "Linear interpolation", \
+			"data.txt" every :::0::0 using 1:3 with lines title "Linear integration" \
+	' | gnuplot
+
+qspline.svg: data.txt
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
 		set grid;\
 		set key bottom;\
 		set xlabel "x";\
 		set ylabel "y";\
-		set title "Linear Interpolation of Cosine";\
+		set title "Quadratic Interpolation of Cosine";\
 		plot \
-			"data.txt" every::1 using 1:2 with lines title "Linear interpolation",\
-			"data.txt"  every::1 using 1:3 with lines title "Integration",\
-			"CosineTable.txt" with points pointtype 7 title "Tabulated values" \
-	' | gnuplot
+			cos(x) with points, \
+			sin(x) with points, \
+			-sin(x) with points, \
+			"data.txt" every :::0::0 using 1:4 with lines title "Quadratic interpolation",\
+			"data.txt" every :::0::0 using 1:5 with lines title "Quadratic integration",\
+			"data.txt" every :::0::0 using 1:6 with lines title "Quadratic derivative"\
+	' | gnuplot 
 
 
-data.txt: main
-	./main > data.txt
 
 
-main: main.o LinearSpline.o
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	
-main.o: main.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
+# Create executable file for main
+$(MAIN): $(MAIN_OBJ) $(LSPLINE_OBJ) $(QSPLINE_OBJ) $(CSPLINE_OBJ)
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$@ > output.txt
 
-LinearSpline.o: LinearSpline.cpp LinearSpline.h
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(filter %.cpp,$^) -o $@
+# Creaet executable file for data for splines
+$(DATA): $(DATA_OBJ) $(SPLINE_OBJ)
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$@ > data.txt
+
+# Create object file for main
+$(MAIN_OBJ): $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
+
+# Create object file for data for splines
+$(DATA_OBJ): $(DATA_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
+
+# Create object file for linear spline
+$(SPLINE_OBJ): $(SPLINE_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
+
 
 clean:
-	$(RM) main.o LinearSpline.o plot.svg
+	rm -rf data exe obj plots output.txt data.txt

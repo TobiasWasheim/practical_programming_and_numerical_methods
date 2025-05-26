@@ -3,38 +3,38 @@
 #include<cmath>
 #include<tuple>
 #include"ODE.h"
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 
 
-std::tuple<Vector,Vector> rkstep12(
-                            std::function<Vector(double, Vector)> f, 
+std::tuple<colVector,colVector> rkstep12(
+                            std::function<colVector(double, colVector)> f, 
                             double x, 
-                            Vector y, 
+                            colVector y, 
                             double h
                         ) {
 
-    Vector k0 = f(x,y);
-    Vector k1 = f((x + h) * 0.5,y + k0 * h * 0.5);
-    Vector yh = y + k1 * h;
-    Vector dy = (k1 - k0) * h;
+    colVector k0 = f(x,y);
+    colVector k1 = f((x + h) * 0.5,y + k0 * h * 0.5);
+    colVector yh = y + k1 * h;
+    colVector dy = (k1 - k0) * h;
         
     return std::make_tuple(yh,dy);
 }
 
 
-std::tuple<Vector,std::vector<Vector>> driver(
-                                    std::function<Vector(double, Vector)> f, 
+std::tuple<colVector,std::vector<colVector>> driver(
+                                    std::function<colVector(double, colVector)> f, 
                                     double a, 
-                                    Vector ya, 
+                                    colVector ya, 
                                     double b, 
                                     double h, 
                                     double acc, 
                                     double eps
                                 ) {
     double x = a;
-    Vector y = ya;
+    colVector y = ya;
     std::vector<double> xlist({x});
-    std::vector<Vector> ylist({y});
+    std::vector<colVector> ylist({y});
 
     while (true) {
         if (x >= b) {
@@ -45,12 +45,12 @@ std::tuple<Vector,std::vector<Vector>> driver(
             x = b - h;
         }
 
-        std::tuple<Vector,Vector> ys = rkstep12(f,x,y,h);
-        Vector yh = std::get<0>(ys);
-        Vector dy = std::get<1>(ys);
+        std::tuple<colVector,colVector> ys = rkstep12(f,x,y,h);
+        colVector yh = std::get<0>(ys);
+        colVector dy = std::get<1>(ys);
             
-        double tolerance = (acc + yh.norm() * eps) * std::sqrt(h/(b-a));
-        double error = dy.norm();
+        double tolerance = (acc + norm(yh) * eps) * std::sqrt(h/(b-a));
+        double error = norm(dy);
 
         if (error < tolerance) {
             x += h;

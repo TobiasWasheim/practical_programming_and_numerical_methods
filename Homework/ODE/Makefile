@@ -1,71 +1,104 @@
-# Makefile for Vector, Matrix, and QR classes
-
 # Compiler and flags
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXX = clang
+CXXFLAGS = -std=c++20 -O0 -ffast-math
+LDLIBS = -lstdc++ -lm
 
 # Source files
-VECTOR_SRC = ../Matrix/vector.cpp
-MATRIX_SRC = ../Matrix/matrix.cpp
-ODE_SRC = ODE.cpp # Assuming your QR class is in EVD.cpp
-MAIN_SRC = main.cpp # Add main.cpp
-
-# Header files
-VECTOR_HDR = ../Matrix/vector.h
-MATRIX_HDR = ../Matrix/matrix.h
-ODE_HDR = ODE.h
+MATRIX_SRC = ../../Matrix/matrix.cpp
+ODE_SRC = ODE.cpp 
+MAIN_SRC = main.cpp 
 
 # Object files
-VECTOR_OBJ = vector.o
-MATRIX_OBJ = matrix.o
-ODE_OBJ = ODE.o
-MAIN_OBJ = main.o # Add main.o
+MATRIX_OBJ = obj/matrix.o
+ODE_OBJ = obj/ODE.o
+MAIN_OBJ = obj/main.o 
 
 # Executable name
-TARGET = main
+MAIN = exe/main
 
 # Default target
-all: plot.svg
+all: folders $(MAIN) plots
 
-plot.svg: data.txt
+plots: HarmonicOscillator.svg equatorial_part_B1.svg equatorial_part_B2.svg equatorial_part_B3.svg
+	
+folders:
+	mkdir -p obj
+	mkdir -p exe
+	mkdir -p plots
+
+HarmonicOscillator.svg:
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
 		set grid;\
 		set key right;\
 		set xlabel "Time (arb. unit)";\
 		set ylabel "y (arb. unit)";\
-		set title "Harmonic Oscillator";\
+		set title "Harmonic Oscillator  with Conditions u(0) = 1, u'\''(0) = 0";\
 		plot \
-			"data.txt" using 1:2 with lines title "Displacement",\
-			"data.txt" using 1:3 with lines title "Velocity" \
+			"data.txt" every :::0::0 using 1:2 with lines title "Displacement",\
+			"data.txt" every :::0::0 using 1:3 with lines title "Velocity" \
 	' | gnuplot
 
-data.txt: main
-	./main > data.txt
+equatorial_part_B1.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "φ azimuthal angle (arb. unit)";\
+		set ylabel "u = 1/r (arb. unit)";\
+		set title "Equatorial Equation with Conditions ε = 0, u(0) = 0, u'\''(0) = 0";\
+		plot \
+			"data.txt" every :::1::1 using 1:2 with lines title "u(φ)", \
+	' | gnuplot
+
+equatorial_part_B2.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "cos(φ), cosine of azimuthal angle (arb. unit)";\
+		set ylabel "sin(u) (arb. unit)";\
+		set title "Equatorial Equation with Conditions ε = 0, u(0) = 0, u'\''(0) = -0.5";\
+		plot \
+			"data.txt" every :::2::2 using (1/$$2)*cos($$1):(1/$$2)*sin($$1) with lines title "u(φ)", \
+	' | gnuplot
+
+equatorial_part_B3.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "cos(φ), cosine of azimuthal angle (arb. unit)";\
+		set ylabel "sin(u) (arb. unit)";\
+		set title "Equatorial Equation with conditions ε = 0.01, u(0) = 0, u'\''(0) = -0.5";\
+		plot \
+			"data.txt" every :::3::3 using (1/$$2)*cos($$1):(1/$$2)*sin($$1) with lines title "u(φ)", \
+	' | gnuplot
+
 # Create executable
-$(TARGET): $(VECTOR_OBJ) $(MATRIX_OBJ) $(ODE_OBJ) $(MAIN_OBJ) # Add main.o
-	$(CXX) $(CXXFLAGS) $(VECTOR_OBJ) $(MATRIX_OBJ) $(ODE_OBJ) $(MAIN_OBJ) -o $(TARGET) 
+$(MAIN): $(MATRIX_OBJ) $(ODE_OBJ) $(MAIN_OBJ) 
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$(MAIN) > out.txt
 
 # Compile main
-$(MAIN_OBJ): $(MAIN_SRC) $(VECTOR_HDR) $(MATRIX_HDR) # Correct dependencies
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
-
-# Compile vector.cpp to vector.o
-$(VECTOR_OBJ): $(VECTOR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(VECTOR_SRC) -o $(VECTOR_OBJ)
+$(MAIN_OBJ): $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Compile matrix.cpp to matrix.o
-$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR) $(VECTOR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MATRIX_SRC) -o $(MATRIX_OBJ)
+$(MATRIX_OBJ): $(MATRIX_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Compile EVD.cpp to EVD.o
-$(ODE_OBJ): $(ODE_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(ODE_SRC) -o $(ODE_OBJ)
+$(ODE_OBJ): $(ODE_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Clean object files and executable
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(ODE_OBJ) $(MAIN_OBJ) $(TARGET)
+	rm -rf plots exe obj data.txt out.txt
 
 # Phony targets
 .PHONY: all clean
