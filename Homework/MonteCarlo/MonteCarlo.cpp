@@ -2,7 +2,7 @@
 #include<functional>
 #include<random>
 #include<cmath>
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 
 double nextDouble() {
     static std::random_device rd;
@@ -11,10 +11,10 @@ double nextDouble() {
     return dis(gen);
 }
 
-std::tuple<double, double> plainMC(std::function<double(Vector)> f, Vector a, Vector b, int N) {
+std::tuple<double, double> plainMC(std::function<double(colVector)> f, colVector a, colVector b, int N) {
     
     double V = 1;
-    int dim = a.getSize();
+    int dim = a.size();
     
     for (int i = 0; i < dim; i++) {
         V *= b[i] - a[i];
@@ -22,7 +22,7 @@ std::tuple<double, double> plainMC(std::function<double(Vector)> f, Vector a, Ve
 
     double sumf = 0;
     double sumfsquared = 0;
-    Vector x(dim);
+    colVector x(dim);
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < dim; j++) {

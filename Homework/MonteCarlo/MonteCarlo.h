@@ -3,10 +3,10 @@
 
 #include<tuple>
 #include<functional>
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 
 double nextDouble();
-std::tuple<double, double> plainMC(std::function<double(Vector)> f, Vector a, Vector b, int N);
+std::tuple<double, double> plainMC(std::function<double(colVector)> f, colVector a, colVector b, int N);
 
 
 #endif

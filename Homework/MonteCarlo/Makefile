@@ -1,72 +1,155 @@
-# Makefile for Vector, Matrix, and QR classes
-
 # Compiler and flags
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXX = clang
+CXXFLAGS = -std=c++20 -O0 -ffast-math
+LDLIBS = -lstdc++ -lm
 
 # Source files
-VECTOR_SRC = ../Matrix/vector.cpp
-MATRIX_SRC = ../Matrix/matrix.cpp
-MC_SRC = MonteCarlo.cpp # Assuming your QR class is in EVD.cpp
-MAIN_SRC = main.cpp # Add main.cpp
+MATRIX_SRC = ../../Matrix/matrix.cpp
+MC_SRC = MonteCarlo.cpp
+MAIN_SRC = main.cpp 
+OLS_SRC = ../OrdinaryLeastSquares/OLS.cpp
+QR_SRC = ../LinearEquations/QR.cpp
 
-# Header files
-VECTOR_HDR = ../Matrix/vector.h
-MATRIX_HDR = ../Matrix/matrix.h
 
 # Object files
-VECTOR_OBJ = vector.o
-MATRIX_OBJ = matrix.o
-MC_OBJ = MonteCarlo.o
-MAIN_OBJ = main.o # Add main.o
+MATRIX_OBJ = obj/matrix.o
+MC_OBJ = obj/MonteCarlo.o
+OLS_OBJ = obj/OLS.o
+QR_OBJ = obj/QR.o
+MAIN_OBJ = obj/main.o
 
 # Executable name
-TARGET = main
+MAIN = exe/main
 
 # Default target
-all: plot.svg
+all: folders $(MAIN) plots
 
-plot.svg: data.txt
+plots: unitCircleError.svg unitCircleValue.svg gaussianValue.svg gaussianError.svg functionValue.svg functionError.svg
+
+folders:
+	mkdir -p obj
+	mkdir -p exe
+	mkdir -p plots
+
+functionValue.svg:
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
 		set grid;\
 		set key right;\
 		set xlabel "N";\
-		set ylabel "Error";\
-		set title "Errors for MonteCarlo Integration of x^2+y^2";\
+		set ylabel "Value of integral";\
+		set title "Monte Carlo Integration of the Given Function";\
 		plot \
-			"data.txt" every::1 using 1:2 with lines title "Error",\
-			"data.txt" every::1 using 1:3 with points pointtype 7 title "1/sqrt(N)" \
+			"data.txt" every :::1::1 using 1:2 with points pointtype 7 title "Integral of the given Function",\
+			1.3932039296856768591842462603255 with lines title "Exact value" \
+	' | gnuplot
+
+functionError.svg:
+	echo '\
+			set terminal $(subst .,,$(suffix $@)) background "white"; \
+			set output "plots/$@"; \
+			set grid;\
+			set key right;\
+			set xlabel "N";\
+			set ylabel "Error";\
+			set title "Plain Monte Carlo Error for the Given Function";\
+			plot \
+				"data.txt" every :::1::1 using 1:3 with points pointtype 7 title "Errors",\
+				"data.txt" every :::1::1 using 1:4 with lines title "1/sqrt(N) fit" \
+		' | gnuplot
+
+unitCircleValue.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "N";\
+		set ylabel "Value of integral";\
+		set title "Monte Carlo Integration of Unit Circle";\
+		plot \
+			"data.txt" every :::0::0 using 1:2 with points pointtype 7 title "Area of unit circle",\
+			pi with lines title "Exact value" \
 	' | gnuplot
 
 
-data.txt: main
-	./main > data.txt
+unitCircleError.svg:
+	echo '\
+			set terminal $(subst .,,$(suffix $@)) background "white"; \
+			set output "plots/$@"; \
+			set grid;\
+			set key right;\
+			set xlabel "N";\
+			set ylabel "Error";\
+			set title "Plain Monte Carlo Error for Unit Circle";\
+			plot \
+				"data.txt" every :::0::0 using 1:3 with points pointtype 7 title "Errors",\
+				"data.txt" every :::0::0 using 1:4 with lines title "1/sqrt(N) fit" \
+		' | gnuplot
+
+gaussianValue.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "N";\
+		set ylabel "Value of integral";\
+		set title "Monte Carlo Integral of Gaussian Function";\
+		plot \
+			"data.txt" every :::0::0 using 1:5 with points pointtype 7 title "Area of gaussian function",\
+			pi with lines title "Exact value" \
+	' | gnuplot
+
+
+gaussianError.svg:
+	echo '\
+			set terminal $(subst .,,$(suffix $@)) background "white"; \
+			set output "plots/$@"; \
+			set grid;\
+			set key right;\
+			set xlabel "N";\
+			set ylabel "Error";\
+			set title "Plain Monte Carlo Error for Gaussian Function";\
+			plot \
+				"data.txt" every :::0::0 using 1:6 with points pointtype 7 title "Errors",\
+				"data.txt" every :::0::0 using 1:7 with lines title "1/sqrt(N) fit" \
+		' | gnuplot
+
+
+
+
 
 # Create executable
-$(TARGET): $(VECTOR_OBJ) $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) # Add main.o
-	$(CXX) $(CXXFLAGS) $(VECTOR_OBJ) $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) -o $(TARGET) 
+$(MAIN): $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) $(OLS_OBJ) $(QR_OBJ)
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$@ > out.txt
 
 # Compile main
-$(MAIN_OBJ): $(MAIN_SRC) $(VECTOR_HDR) $(MATRIX_HDR) # Correct dependencies
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
+$(MAIN_OBJ): $(MAIN_SRC) 
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
-# Compile vector.cpp to vector.o
-$(VECTOR_OBJ): $(VECTOR_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(VECTOR_SRC) -o $(VECTOR_OBJ)
 
 # Compile matrix.cpp to matrix.o
-$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR) $(VECTOR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MATRIX_SRC) -o $(MATRIX_OBJ)
+$(MATRIX_OBJ): $(MATRIX_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
+
+#Compile QR.cpp to QR.o
+$(QR_OBJ): $(QR_SRC) 
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
+
+#Comple OLS.cpp to OLS.o
+$(OLS_OBJ): $(OLS_SRC) 
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 # Compile EVD.cpp to EVD.o
-$(MC_OBJ): $(MC_SRC) $(VECTOR_HDR) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MC_SRC) -o $(MC_OBJ)
+$(MC_OBJ): $(MC_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Clean object files and executable
 clean:
-	rm -f $(VECTOR_OBJ) $(MATRIX_OBJ) $(MC_OBJ) $(MAIN_OBJ) $(TARGET)
+	@rm -rf exe obj plots data.txt out.txt
 
 # Phony targets
 .PHONY: all clean

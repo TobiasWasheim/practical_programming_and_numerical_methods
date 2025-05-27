@@ -4,6 +4,7 @@
 #include<vector>
 #include<tuple>
 #include"OLS.h"
+
 std::tuple<colVector,matrix> radioactivityFit()  {
     
     std::function<double(double)> f1 = [](double x) {return 1.0;};
