@@ -102,9 +102,10 @@ int main() {
     /**Part B:
      * Implement a multidimensional Monte-Carlo integrator that uses low-discrepancy (quasi-random) sequences
      * Compare the scaling of the error with your pseudo-random Monte-Carlo integrator
-     */
+    */
 
-     
+    std::tuple<double,double> unitCirclePlainMC = plainMC(unitCircleFunction,colVector{-1,-1},colVector{1,1},1000);
+    std::tuple<double,double> unitCircleQuasiMC = quasiMC(unitCircleFunction,colVector{-1,-1},colVector{1,1},1000);
 
 
      /**Part C:
@@ -112,7 +113,47 @@ int main() {
       * Investigate the quality of this error estimate by calculating some difficult intergrals and comparing the estimated error with the actual error.
       */
 
+    std::cout << "---------------------------------------------" << "\n";
+    std::cout << "Homework: Monte Carlo - part A" << "\n";
+    std::cout << "---------------------------------------------" << "\n\n";
 
+    std::cout << "In part A I have implemented the plain Monte " << "\n";
+    std::cout << "Carlo integration method. To test that it    " << "\n";
+    std::cout << "works, I have calculated the area of the     " << "\n";
+    std::cout << "unit circle and the area under the Gaussian  " << "\n";
+    std::cout << "function. The plots for the integral value   " << "\n";
+    std::cout << "and error with the number of points on the   " << "\n";
+    std::cout << "x-axis. They can seen in the folder plots/.  " << "\n";
+    std::cout << "The error for both the unit circle area and  " << "\n";
+    std::cout << "integral value of the Gaussian function goes " << "\n";
+    std::cout << "as 1/sqrt(N).                                " << "\n";
+    std::cout << "The integral values goes towards the exact   " << "\n";
+    std::cout << "value as N increases.                        " << "\n\n";
+    std::cout << "Lastly, the 3D integral given in the bottom  " << "\n";
+    std::cout << "for part A can be seen on the plots          " << "\n";
+    std::cout << "plots/functionError.svg and                  " << "\n";
+    std::cout << "plots/functionValue.svg.                     " << "\n";
+    std::cout << "---------------------------------------------" << "\n\n";
+    std::cout << "Homework: Monte Carlo - part B" << "\n";
+    std::cout << "---------------------------------------------" << "\n\n";
 
+    std::cout << "In part B I have implemented the quasi-      " << "\n";
+    std::cout << "random Monte Carlo integral method. I've     " << "\n";
+    std::cout << "used the Van der Corput sequence and to      " << "\n";
+    std::cout << "find the error, I have used to different     " << "\n";
+    std::cout << "bases and subtracted the integral values     " << "\n";
+    std::cout << "that are made up from the two bases.         " << "\n";
+    std::cout << "Comparing the method to the plain MC method  " << "\n";
+    std::cout << "for N = 1000 points we get that              " << "\n\n";
 
+    std::cout << "Plain MC unit circle area = " << std::get<0>(unitCirclePlainMC) << "\n";
+    std::cout << "Quasi MC unit circle area = " << std::get<0>(unitCircleQuasiMC) << "\n";
+
+    std::cout << "Plain MC unit circle error = " << std::get<1>(unitCirclePlainMC) << "\n";
+    std::cout << "Quasi MC unit circle error = " << std::get<1>(unitCircleQuasiMC) << "\n\n";
+
+    std::cout << "The exact value is 3.14... so for the quasi- " << "\n";
+    std::cout << "random Monte Carlo method we are close to the" << "\n";
+    std::cout << "value and it also has a lower estimated error" << "\n";
+    std::cout << "than the plain Monte Carlo method.           " << "\n";
 }

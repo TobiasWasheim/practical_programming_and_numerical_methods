@@ -22,7 +22,7 @@ MAIN_OBJ = obj/main.o
 MAIN = exe/main
 
 # Default target
-all: folders $(MAIN) plots
+all: folders $(MAIN)
 
 plots: unitCircleError.svg unitCircleValue.svg gaussianValue.svg gaussianError.svg functionValue.svg functionError.svg
 
