@@ -1,104 +1,81 @@
 # Makefile for compiling integration.cpp with g++ and running tests
 
 # Compiler and flags
-CXX = g++
-CXXFLAGS = -std=c++23 -Wall
+CXX = clang
+CXXFLAGS = -std=c++20 -O0 -ffast-math
+LDLIBS = -lstdc++ -lm
 
 # Source files
-INTEGR_SRC = integration.cpp
-
-# Header file
-INTEGR_HDR = integration.h
+QUAD_SRC = integration.cpp
+MAIN_SRC = main.cpp
 
 # Object files
-INTEGR_OBJ = integration.o
+QUAD_OBJ = obj/integration.o
+MAIN_OBJ = obj/main.o
+
+# Executable files
+MAIN = exe/main
 
 
 # Default target
-all:  run/IntegratedFunctions run/ErrorFunctionValues run/ErrorFunctionPrecision plots/ErrorFunctionValues.svg plots/ErrorFunctionPrecision.svg
+all: folders $(MAIN) plots
 
+plots: ErrorFunctionPrecision.svg ErrorFunctionValues.svg 
 
-#################################################################################
-
-#							PART A
-
-#################################################################################
+folders:
+	mkdir -p plots
+	mkdir -p exe
+	mkdir -p obj
 
 # Make a plot of errorfunction values and their tabulated values
-plots/ErrorFunctionPrecision.svg: PartA/ErrorFunctionPrecision.txt 
+ErrorFunctionPrecision.svg: 
 	mkdir -p plots
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
 		set grid;\
+		set logscale xy; \
 		set key left;\
 		set xlabel "acc";\
 		set ylabel "erf(1)";\
 		set title "Error function";\
 		plot \
-			"$<" with lines title "erf(1)"\
+			"data.txt" every:::1::1 using 1:2 with lines title "erf(1)"\
 	' | gnuplot
 
-plots/ErrorFunctionValues.svg: PartA/ErrorFunctionValues.txt PartA/erf_tabulated.txt
+ErrorFunctionValues.svg:
 	mkdir -p plots
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
-		set output "$@"; \
+		set output "plots/$@"; \
 		set grid;\
 		set key left;\
 		set xlabel "x";\
 		set ylabel "erf(x)";\
 		set title "Error function";\
 		plot \
-			"$<" with lines title "erf(x)",\
-			"PartA/erf_tabulated.txt" with points pointtype 7 title "tabulated" \
+			"data.txt" every:::0::0 with lines title "erf(x)",\
+			"erf_tabulated.txt" with points pointtype 7 title "tabulated" \
 	' | gnuplot
 
-# Linker for Errorfunction precision cpp file
-run/ErrorFunctionPrecision: Objects/$(INTEGR_OBJ) Objects/ErrorFunctionPrecision.o
-	$(CXX) $(CXXFLAGS) Objects/ErrorFunctionPrecision.o Objects/$(INTEGR_OBJ) -o $@
-	./$@ > PartA/ErrorFunctionPrecision.txt
+# Create executable
+$(MAIN): $(MAIN_OBJ) $(QUAD_OBJ)
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$(MAIN) > out.txt
 
-# Linker for Errorfunction values cpp file
-run/ErrorFunctionValues: Objects/$(INTEGR_OBJ) Objects/ErrorFunctionValues.o
-	$(CXX) $(CXXFLAGS) Objects/ErrorFunctionValues.o Objects/$(INTEGR_OBJ) -o $@
-	./$@ > PartA/ErrorFunctionValues.txt
-
-# Linker for integrated functions cpp file
-run/IntegratedFunctions: Objects/$(INTEGR_OBJ) Objects/IntegratedFunctions.o
-	$(CXX) $(CXXFLAGS) Objects/IntegratedFunctions.o Objects/$(INTEGR_OBJ) -o $@
-	./$@ > PartA/IntegratedFunctions.txt
-
-# Compile the object file for ErrorFunctionPrecision
-Objects/ErrorFunctionPrecision.o: PartA/ErrorFunctionPrecision.cpp integration.h
-	$(CXX) $(CXXFLAGS) -c PartA/ErrorFunctionPrecision.cpp -o $@
-
-# Compile the object file for ErrorFunctionValues
-Objects/ErrorFunctionValues.o: PartA/ErrorFunctionValues.cpp integration.h
-	$(CXX) $(CXXFLAGS) -c PartA/ErrorFunctionValues.cpp -o $@	
-
-# Compile the object file for IntegratedFunctions.cpp
-Objects/IntegratedFunctions.o: PartA/IntegratedFunctions.cpp integration.h
-	$(CXX) $(CXXFLAGS) -c PartA/IntegratedFunctions.cpp -o $@	
-
-#################################################################################
-
-#							INTEGRATION FILE
-
-#################################################################################
+# Compile main
+$(MAIN_OBJ): $(MAIN_SRC) 
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
-# Compile the object file for integration 
-Objects/$(INTEGR_OBJ) : $(INTEGR_SRC) $(INTEGR_HDR)
-	$(CXX) $(CXXFLAGS) -c $(INTEGR_SRC) -o $@
-
-
-
+# Compile integration.cpp to integration.o
+$(QUAD_OBJ): $(QUAD_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 
 # Clean object files and executables
 clean:
-	rm -f Objects/* plots/* run/* PartA/ErrorFunctionPrecision.txt PartA/ErrorFunctionValues.txt PartA/IntegratedFunctions.txt
+	rm -rf plots exe obj out.txt data.txt
 
 # Phony targets
 .PHONY: all clean
