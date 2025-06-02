@@ -2,4 +2,47 @@
 Homework: Integration - part A
 ---------------------------------------------
 
-In part A...
+In part A I have implemented the open-4 Gauss
+quadrature. To test that it works, I have    
+used it to evaluate the four integrals given 
+in part A.                                   
+
+integral of sqrt(x) from 0 to 1       = 0.672681
+integral of 1/sqrt(x) from 0 to 1     = 2.01881
+integral of sqrt(1-x*x) from 0 to 1   = 3.15286
+integral of ln(x)/sqrt(x) from 0 to 1 = -4.03168
+
+The accuracy is 0.01 so comparing to the
+analytical results, we see that the     
+accuracy of the numerical result is on  
+correct magnitude.                      
+
+Next, we plot the error function. This  
+plot can be seen at plots/erfValue.svg. 
+
+At last, we calculate erf(1) for        
+different accuracies. I have plotted on 
+log-log scale the accuracy vs. the      
+absolute difference between the         
+numerical and exact result at           
+plots/erfPrecision.svg.                 
+---------------------------------------------
+Homework: Integration - part B
+---------------------------------------------
+
+In part B I have implemented the Clenshaw-   
+Curtis open-4 quadrature. Calculating some   
+interesting integrals:                       
+
+integral of 1/sqrt(x) from 0 to 1 = 1.98857
+integral of ln(x)/sqrt(x) from 0 to 1 = -3.97256
+
+In part A we calculated the same integrals with
+the no variable transformation. Comparing the  
+the number of integrand evalulations we get that
+that for the first integral the Clenshaw-Curtis 
+has 17 iterations and the second
+integral has 173 iterations.
+The open-4 non-transformation for the first integral
+has 17155 iterations and the second
+integral has 19377 iterations.

@@ -20,7 +20,7 @@ MAIN = exe/main
 # Default target
 all: folders $(MAIN) plots
 
-plots: ErrorFunctionPrecision.svg ErrorFunctionValues.svg 
+plots: erfPrecision.svg erfValue.svg
 
 folders:
 	mkdir -p plots
@@ -28,7 +28,7 @@ folders:
 	mkdir -p obj
 
 # Make a plot of errorfunction values and their tabulated values
-ErrorFunctionPrecision.svg: 
+erfPrecision.svg: 
 	mkdir -p plots
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
@@ -43,7 +43,7 @@ ErrorFunctionPrecision.svg:
 			"data.txt" every:::1::1 using 1:2 with lines title "erf(1)"\
 	' | gnuplot
 
-ErrorFunctionValues.svg:
+erfValue.svg:
 	mkdir -p plots
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \

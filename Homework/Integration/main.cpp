@@ -26,11 +26,13 @@ int main() {
     std::function<double(double)> f3 = [](double x) { return 4*std::sqrt(1-x*x);};
     std::function<double(double)> f4 = [](double x) { return std::log(x)/std::sqrt(x);};
 
+    int counter3 = 0;
+    int counter4 = 0;
     // Numerical integration of the functions
     double Q1 = adapt(f1,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
-    double Q2 = adapt(f2,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
+    double Q2 = adapt(f2,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),&counter3);
     double Q3 = adapt(f3,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
-    double Q4 = adapt(f4,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
+    double Q4 = adapt(f4,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),&counter4);
 
     std::ofstream file;
 
@@ -58,11 +60,58 @@ int main() {
     }
     file.close();
 
+    int counter1 = 0;
+    int counter2 = 0;
+
 
     std::cout << "---------------------------------------------" << "\n";
     std::cout << "Homework: Integration - part A" << "\n";
     std::cout << "---------------------------------------------" << "\n\n";
 
-    std::cout << "In part A..." << "\n";
+    std::cout << "In part A I have implemented the open-4 Gauss" << "\n";
+    std::cout << "quadrature. To test that it works, I have    " << "\n";
+    std::cout << "used it to evaluate the four integrals given " << "\n";
+    std::cout << "in part A.                                   " << "\n\n";
+
+    std::cout << "integral of sqrt(x) from 0 to 1       = " << Q1 << "\n";
+    std::cout << "integral of 1/sqrt(x) from 0 to 1     = " << Q2 << "\n";
+    std::cout << "integral of sqrt(1-x*x) from 0 to 1   = " << Q3 << "\n";
+    std::cout << "integral of ln(x)/sqrt(x) from 0 to 1 = " << Q4 << "\n\n";
+
+    std::cout << "The accuracy is 0.01 so comparing to the" << "\n";
+    std::cout << "analytical results, we see that the     " << "\n";
+    std::cout << "accuracy of the numerical result is on  " << "\n";
+    std::cout << "correct magnitude.                      " << "\n\n";
+
+    std::cout << "Next, we plot the error function. This  " << "\n";
+    std::cout << "plot can be seen at plots/erfValue.svg. " << "\n\n";
+    
+    std::cout << "At last, we calculate erf(1) for        " << "\n";
+    std::cout << "different accuracies. I have plotted on " << "\n";
+    std::cout << "log-log scale the accuracy vs. the      " << "\n";
+    std::cout << "absolute difference between the         " << "\n";
+    std::cout << "numerical and exact result at           " << "\n";
+    std::cout << "plots/erfPrecision.svg.                 " << "\n";
+
+    std::cout << "---------------------------------------------" << "\n";
+    std::cout << "Homework: Integration - part B" << "\n";
+    std::cout << "---------------------------------------------" << "\n\n";
+    
+    std::cout << "In part B I have implemented the Clenshaw-   " << "\n";
+    std::cout << "Curtis open-4 quadrature. Calculating some   " << "\n";
+    std::cout << "interesting integrals:                       " << "\n\n";
+    
+    std::cout << "integral of 1/sqrt(x) from 0 to 1 = " << ClenshawCurtisAdapt(f2,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),&counter1) << "\n";
+    std::cout << "integral of ln(x)/sqrt(x) from 0 to 1 = " << ClenshawCurtisAdapt(f4,0,1,0.001,0.01,std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),&counter2) << "\n\n";
+
+    std::cout << "In part A we calculated the same integrals with" << "\n";
+    std::cout << "the no variable transformation. Comparing the  " << "\n";
+    std::cout << "the number of integrand evalulations we get that" << "\n";
+    std::cout << "that for the first integral the Clenshaw-Curtis " << "\n";
+    std::cout << "has " << counter1 << " iterations and the second" << "\n";
+    std::cout << "integral has " << counter2 << " iterations." << "\n";
+    std::cout << "The open-4 non-transformation for the first integral" << "\n";
+    std::cout << "has " << counter3 << " iterations and the second" << "\n";
+    std::cout << "integral has " << counter4 << " iterations." << "\n";
     return 0;
 }

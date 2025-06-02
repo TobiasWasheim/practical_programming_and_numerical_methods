@@ -7,8 +7,10 @@
 double adapt(std::function<double(double)> f, double a, double b, 
             double acc, double eps, 
             double f2, 
-            double f3)
+            double f3, int* counter)
 {
+    if (counter) (*counter)++;
+
     double f1 = f(a+(b-a) * 1.0/6.0);
     double f4 = f(a+(b-a) * 5.0/6.0);
 
@@ -29,8 +31,24 @@ double adapt(std::function<double(double)> f, double a, double b,
     }
     else
     {
-        double Q1 = adapt(f,a,(a+b)/2.0,acc/std::sqrt(2),eps,f1,f2);
-        double Q2 = adapt(f,(a+b)/2.0,b,acc/std::sqrt(2),eps,f1,f2);
+        double Q1 = adapt(f,a,(a+b)/2.0,acc/std::sqrt(2),eps,f1,f2, counter);
+        double Q2 = adapt(f,(a+b)/2.0,b,acc/std::sqrt(2),eps,f1,f2, counter);
         return Q1 + Q2;
     }
+}
+
+double ClenshawCurtisAdapt( std::function<double(double)> f, 
+                            double a, 
+                            double b, 
+                            double acc, 
+                            double eps, 
+                            double f2, 
+                            double f3,
+                            int* counter) 
+{
+    auto g = [&](double t){
+		return f((a+b)/2+(b-a)/2*cos(t))*sin(t)*(b-a)/2;
+		};
+	double Q=adapt(g,0,M_PI,acc,eps, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), counter);
+	return Q;
 }

@@ -2,21 +2,20 @@
 #include<limits>
 #include<cmath>
 
-#include"../Matrix/matrix.h"
-#include"../Matrix/vector.h"
+#include"../../Matrix/matrix.h"
 /* The Jacobian matrix */
-Matrix Jacobian(std::function<Vector(Vector)> f, Vector x) {
+matrix Jacobian(std::function<colVector(colVector)> f, colVector x) {
     
     double EPS = std::numeric_limits<double>::epsilon();
     double df;
     double dx;
-    Vector fx = f(x);
+    colVector fx = f(x);
 
-    Matrix J(x.getSize(),x.getSize());
+    matrix J(x.size(),x.size());
 
     /* Entries for the Jacobian matrix*/
-    for (int i = 0; i < x.getSize(); i++) {
-        for (int k = 0; k < x.getSize(); k++) {
+    for (int i = 0; i < x.size(); i++) {
+        for (int k = 0; k < x.size(); k++) {
             dx = abs(x[k]) * std::sqrt(EPS);
             
             x[k] += dx;
@@ -25,24 +24,24 @@ Matrix Jacobian(std::function<Vector(Vector)> f, Vector x) {
 
             x[k] -= dx;
 
-            J[i][k] = dx/df;
+            J(i,k) = dx/df;
         }
     }
     return J;
 }
 
-Vector NewtonsMethod(std::function<Vector(Vector)> f, Vector x) {
-    Matrix J = Jacobian(f,x);
-    Vector fx = f(x);
+colVector NewtonsMethod(std::function<colVector(colVector)> f, colVector x) {
+    matrix J = Jacobian(f,x);
+    colVector fx = f(x);
     double lambda = 1;
-    Vector dx = J * fx;
-    Vector fxlamb = f(x - dx * lambda);
+    colVector dx = J * fx;
+    colVector fxlamb = f(x - dx * lambda);
 
     
     
-    while (f(x - dx * lambda).norm() > (1 - lambda/2) * fx.norm() && lambda > 1/128.0) {
+    while (norm(f(x - dx * lambda)) > (1 - lambda/2) * norm(fx) && lambda > 1/128.0) {
         lambda *= 0.5;
-        x += dx * lambda;
+        x = x + dx * lambda;
     }
 }
 
