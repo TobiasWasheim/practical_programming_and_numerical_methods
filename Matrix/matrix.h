@@ -3,18 +3,21 @@
 
 #include<cassert>
 #include<vector>
+#include<functional>
 
 class vector {
 protected:
-    std::vector<double> elements = {};
+    std::vector<double> elements;
+    bool is_null = false;
 
 public:
-    vector() : elements() {}
-    vector(int size) : elements(size) {
+    vector() : is_null(true) {}
+    vector(int size) : elements(size), is_null(false) {
         assert(size >= 0);
     }
-    vector(std::initializer_list<double> list) : elements(list) {} 
-    vector(std::vector<double> list) : elements(list) {} 
+    vector(std::initializer_list<double> list) : elements(list), is_null(false) {} 
+    vector(std::vector<double> list) : elements(list), is_null(false) {} 
+    bool isNull() const { return is_null; }
     /*Return size of vector*/
     int size();
     double& operator[](int index);
@@ -23,7 +26,9 @@ public:
 
 class rowVector : public vector {
 public:
+
     using vector::vector;
+
 
     rowVector operator+(const rowVector& other) const;
     rowVector operator-(const rowVector& other) const;
@@ -39,6 +44,8 @@ public:
     colVector operator+(const colVector& other) const;
     colVector operator-(const colVector& other) const;
     colVector operator/(const double& num) const;
+
+    colVector map(std::function<double(double)> f);
 
     void print();
 };
@@ -105,6 +112,8 @@ colVector transpose(rowVector v);
 colVector unitVector(int size, int index);
 double norm(vector v);
 bool compare(vector a, vector b, double acc = 1e-4);
+
+
 
 /*      Matrix operations       */
 

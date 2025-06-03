@@ -68,6 +68,7 @@ bool compare(vector a, vector b, double acc) {
 }
 
 
+
 /*          rowVector class methods           */
 
 colVector colVector::operator+(const colVector& other) const {
@@ -101,6 +102,14 @@ void colVector::print() {
     for (size_t i = 0; i < elements.size(); i++) {
         std::cout << elements[i] << "\n";
     }
+}
+
+colVector colVector::map(std::function<double(double)> f) {
+    colVector v(size());
+    for (int i = 0; i < size(); i++) {
+        v[i] = f(elements[i]);
+    }
+    return v;
 }
 
 
@@ -383,7 +392,7 @@ bool compare(matrix A, matrix B, double acc) {
 
     for (int i = 0; i < A.rows(); i++) {
         for (int j = 0; j < A.cols(); j++) {
-            if (A(i,j) - B(i,j) > acc) {
+            if (std::abs(A(i,j) - B(i,j)) > acc) {
                 return false;
             }
         }

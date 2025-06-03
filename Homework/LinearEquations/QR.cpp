@@ -14,7 +14,6 @@ std::tuple<matrix,matrix> decomp(matrix A) {
     for (int i = 0; i < n; i++) {
         R(i,i) = norm(Q.col(i));
         Q.col(i) = Q.col(i)/R(i,i);
-        
         for (int j = i + 1; j < n; j++) {
             R(i,j) = dot(Q.col(i),Q.col(j));
             Q.col(j) = Q.col(j) - Q.col(i) * R(i,j);
