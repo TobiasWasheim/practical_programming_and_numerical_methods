@@ -36,7 +36,7 @@ Curtis open-4 quadrature. Calculating some
 interesting integrals:                       
 
 integral of 1/sqrt(x) from 0 to 1 = 1.98857
-integral of ln(x)/sqrt(x) from 0 to 1 = -3.97256
+integral of ln(x)/sqrt(x) from 0 to 1 = 1.98857
 
 In part A we calculated the same integrals with
 the no variable transformation. Comparing the  
@@ -69,6 +69,31 @@ So we get the correct result in our test when using our integrator with infinite
 Comparing with scipy's integrator routine, we get that the number of iterations for our gaussian
 integral is 1. For scipy's integrator it uses roughly 90 iterations to compute the integral
 of the Gaussian integral.
+
+---------------------------------------------
+Homework: Integration - part C
+---------------------------------------------
+
+It has been implemented that the integrator returns the estimate
+of the error. We investigate these estimates by comparing the numerical
+solution to the numerical solution for a couple of integrals.
+
+We look at the following integrals:
+  ln(x) from 0 to 1 which is equal to -1,         (we call this function g1)
+  sqrt(x) from 0 to 1 which is equal to 2/3,      (we call this function g2)
+  1/sqrt(1-x) from 0 to 1 which is equal to 2,    (we call this function g3)
+
+The solutions and errors are:
+Q_g1 = -1.00451 and error_g1 = 0.00268201
+Q_g2 = 0.672681 and error_g2 = 0.00606064
+Q_g3 = 2.00398 and error_g3 = 0.00620058
+The absolute difference between the numerical value and analytical solution is
+|Q_g1-q_g1| = 0.00450598
+|Q_g2-q_g2| = 0.00601421
+|Q_g3-q_g3| = 0.00398342
+
+We see that the errors are roughly equal to the difference (except for g1, but close)
+
 
 Python output:
 Number of iterations using SciPy's integrate for non-infinte limits: 231
