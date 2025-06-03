@@ -26,6 +26,8 @@ int main() {
     std::function<double(double)> f3 = [](double x) { return 4*std::sqrt(1-x*x);};
     std::function<double(double)> f4 = [](double x) { return std::log(x)/std::sqrt(x);};
 
+    std::function<double(double)> gaussian = [](double x) {return std::exp(-x*x);};
+
     int counter3 = 0;
     int counter4 = 0;
     // Numerical integration of the functions
@@ -62,6 +64,12 @@ int main() {
 
     int counter1 = 0;
     int counter2 = 0;
+    int counter5 = 0;
+
+
+    double gauss = adapt(gaussian,-std::numeric_limits<double>::infinity(),0);
+
+    std::cout << "Value of gaussian integral: " << gauss << "\n";
 
 
     std::cout << "---------------------------------------------" << "\n";
@@ -112,6 +120,30 @@ int main() {
     std::cout << "integral has " << counter2 << " iterations." << "\n";
     std::cout << "The open-4 non-transformation for the first integral" << "\n";
     std::cout << "has " << counter3 << " iterations and the second" << "\n";
-    std::cout << "integral has " << counter4 << " iterations." << "\n";
+    std::cout << "integral has " << counter4 << " iterations." << "\n\n";
+
+    std::cout << "Comparing to the number of iterations that Scipy has go" << "\n";
+    std::cout << "to go through (is printed at the bottom under part C)" << "\n";
+    std::cout << "we see that the number of iterations to integrate ln(x)/sqrt(x)" << "\n";
+    std::cout << "is roughly 230. So our Clenshaw-Curits open4 integrator uses fewer" << "\n";
+    std::cout << "iterations for this integral than Python scipy.integrate." << "\n\n";
+
+    std::cout << "Next, I have implemented infinite limits. To test the integrator" << "\n";
+    std::cout << "with infinite limits, I have integrated the gaussian function" << "\n";
+    std::cout << "f(x) = exp(-x*x)." << "\n\n";
+    
+    std::cout << "from -infy to +infy = " << adapt(gaussian,-std::numeric_limits<double>::infinity(),0.001,0.01,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),&counter5) << "\n";
+    std::cout << "from 0 to +infy     = " << adapt(gaussian,0,std::numeric_limits<double>::infinity()) << "\n";
+    std::cout << "from -infy to 0     = " << adapt(gaussian,-std::numeric_limits<double>::infinity(),0) << "\n\n";
+
+    std::cout << "The analytical result from -infy to infy is sqrt(pi) = 1.77.... From 0" << "\n";
+    std::cout << "to +infy or -infy to 0 is sqrt(pi)/2 = 0.88...." << "\n";
+    std::cout << "So we get the correct result in our test when using our integrator with infinite limits." << "\n\n";
+
+    std::cout << "Comparing with scipy's integrator routine, we get that the number of iterations for our gaussian" << "\n";
+    std::cout << "integral is " << counter5 << ". For scipy's integrator it uses roughly 90 iterations to compute the integral" << "\n";
+    std::cout << "of the Gaussian integral." << "\n\n";
+
+    std::cout << "Python output:" << "\n";
     return 0;
 }

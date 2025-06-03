@@ -1,3 +1,4 @@
+Value of gaussian integral: 0.886829
 ---------------------------------------------
 Homework: Integration - part A
 ---------------------------------------------
@@ -46,3 +47,29 @@ integral has 173 iterations.
 The open-4 non-transformation for the first integral
 has 17155 iterations and the second
 integral has 19377 iterations.
+
+Comparing to the number of iterations that Scipy has go
+to go through (is printed at the bottom under part C)
+we see that the number of iterations to integrate ln(x)/sqrt(x)
+is roughly 230. So our Clenshaw-Curits open4 integrator uses fewer
+iterations for this integral than Python scipy.integrate.
+
+Next, I have implemented infinite limits. To test the integrator
+with infinite limits, I have integrated the gaussian function
+f(x) = exp(-x*x).
+
+from -infy to +infy = 0.781289
+from 0 to +infy     = 0.886829
+from -infy to 0     = 0.886829
+
+The analytical result from -infy to infy is sqrt(pi) = 1.77.... From 0
+to +infy or -infy to 0 is sqrt(pi)/2 = 0.88....
+So we get the correct result in our test when using our integrator with infinite limits.
+
+Comparing with scipy's integrator routine, we get that the number of iterations for our gaussian
+integral is 1. For scipy's integrator it uses roughly 90 iterations to compute the integral
+of the Gaussian integral.
+
+Python output:
+Number of iterations using SciPy's integrate for non-infinte limits: 231
+Number of iterations using SciPy's integrate for gaussian function : 90

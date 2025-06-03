@@ -15,10 +15,11 @@ MAIN_OBJ = obj/main.o
 
 # Executable files
 MAIN = exe/main
+PYTHON = python
 
 
 # Default target
-all: folders $(MAIN) plots
+all: folders $(MAIN) $(PYTHON) plots
 
 plots: erfPrecision.svg erfValue.svg
 
@@ -57,6 +58,9 @@ erfValue.svg:
 			"data.txt" every:::0::0 with lines title "erf(x)",\
 			"erf_tabulated.txt" with points pointtype 7 title "tabulated" \
 	' | gnuplot
+
+$(PYTHON):
+	python3 main.py >> out.txt
 
 # Create executable
 $(MAIN): $(MAIN_OBJ) $(QUAD_OBJ)

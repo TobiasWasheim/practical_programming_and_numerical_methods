@@ -9,7 +9,17 @@ double adapt(std::function<double(double)> f, double a, double b,
             double f2, 
             double f3, int* counter)
 {
-    if (counter) (*counter)++;
+    if (std::isinf(a) && std::isinf(b)) {
+        return adaptInfiniteLimits(f,acc,eps,f2,f3,counter);
+    } else if(std::isinf(a)) {
+        return adaptInfiniteLimitsRight(f,b,acc,eps,f2,f3,counter);
+    } else if (std::isinf(b)) {
+        return adaptInfiniteLimitsLeft(f,a,acc,eps,f2,f3,counter);
+    }
+    
+    
+    
+    if (counter != nullptr) (*counter)++;
 
     double f1 = f(a+(b-a) * 1.0/6.0);
     double f4 = f(a+(b-a) * 5.0/6.0);
@@ -50,5 +60,49 @@ double ClenshawCurtisAdapt( std::function<double(double)> f,
 		return f((a+b)/2+(b-a)/2*cos(t))*sin(t)*(b-a)/2;
 		};
 	double Q=adapt(g,0,M_PI,acc,eps, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), counter);
+	return Q;
+}
+
+double adaptInfiniteLimits( std::function<double(double)> f, 
+                            double acc, 
+                            double eps, 
+                            double f2, 
+                            double f3,
+                            int* counter) 
+{
+    auto g = [&](double t) {
+        return (f((1-t)/t) + f(-(1-t)/t))/(t*t);
+    };
+    double Q=adapt(g,0,1,acc,eps, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), counter);
+	return Q;
+}
+
+double adaptInfiniteLimitsLeft( std::function<double(double)> f,
+                            double a,
+                            double acc, 
+                            double eps, 
+                            double f2, 
+                            double f3,
+                            int* counter) 
+{
+    auto g = [&](double t) {
+        return f(a+(1-t)/t) * 1/(t*t);
+    };
+    double Q=adapt(g,0,1,acc,eps, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), counter);
+	return Q;
+}
+
+double adaptInfiniteLimitsRight(  std::function<double(double)> f, 
+                            double b,
+                            double acc, 
+                            double eps, 
+                            double f2, 
+                            double f3,
+                            int* counter) 
+{
+    auto g = [&](double t) {
+        return f(b-(1-t)/t) * 1/(t*t);
+    };
+    double Q=adapt(g,0,1,acc,eps, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), counter);
 	return Q;
 }
