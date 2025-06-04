@@ -11,16 +11,28 @@ f(x,y) = (a - x)^2 + b (y - x^2)^2,
 the minimum is at (a,a^2). I have choosen a = 5 and b = 100.
 Below you can see the minimum point that is computed numerically
 using Newton's minimization method.
-4.99902
-24.9902
-The number of iterations to find the minimum is 2002.
+4.95802
+24.582
+The number of iterations to find the minimum is 910.
 The himmelbalu function
 
 f(x,y) = (x^2 + y - 11)^2 + (x + y^2 - 7)^2,
 
 has five extremum points. We are going to find the point
 (-0.27,-0.92) numerically. The numerical point can be seen below.
--0.270836
--0.922993
-The number of iterations to find the minimum is 10569.
+-0.270837
+-0.922994
+The number of iterations to find the minimum is 5282.
 As we see, the numerical values are close to the analytical ones.
+-------------------------------------------
+Homework: Minimization - part B
+-------------------------------------------
+
+In part B, the data for the Higgs-boson has been fitted
+to determine its mass, decay width, and scale factor.
+These are the following:
+
+m = 125.972 GeV, Γ = 2.08636 GeV, and A = 9.87629
+
+Additionally, the fit is plotted with the experimental data
+and can been seen at the folder plots/.

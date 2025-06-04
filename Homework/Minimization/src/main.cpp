@@ -1,6 +1,9 @@
 #include"../hdr/newton.h"
 
 #include<iostream>
+#include<cmath>
+#include <fstream>
+
 
 int main() {
     int counter_rosenbruck = 0;
@@ -27,6 +30,62 @@ int main() {
     colVector himmelblauMin = newton(himmelblau, start, acc, &counter_himmelblau);
 
     
+    /**
+     * 
+     * 
+     * Part B
+     * 
+     * 
+    */
+    // data
+
+    
+
+    
+
+
+    std::function<double(colVector)> D = [](colVector z) {
+        double E[] = {101, 103, 105, 107, 109, 111, 113, 115, 117, 119, 121, 123, 125, 127, 129, 131, 133, 135, 137, 139, 141, 143, 145, 147, 149, 151, 153, 155, 157, 159};
+
+        double cross[] =  {-0.25, -0.30, -0.15, -1.71, 0.81, 0.65, -0.91, 0.91, 0.96, -2.52, -1.01, 2.01, 4.83, 4.58, 1.26, 1.01, -1.26, 0.45, 0.15, -0.91, -0.81, -1.41, 1.36, 0.50, -0.45, 1.61, -2.21, -1.86, 1.76, -0.50};
+
+        double error[] = {2.0, 2.0, 1.9, 1.9, 1.9, 1.9, 1.9, 1.9, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 0.9, 0.9, 0.9};
+
+        auto F = [](double E,colVector x) {
+        return x[2]/((E-x[0]) * (E-x[0]) + x[1] * x[1]/4);};
+        
+
+        double d = 0;
+
+        for (int i = 0; i < 30; i++) {
+            d += (F(E[i],z) - cross[i]) * (F(E[i],z)-cross[i])/(error[i] * error[i]);
+            // std::cout << "i = " << i << "\n";
+        }
+
+        return d;
+    };
+
+    colVector higgs = newton(D,{125,2,5},1e-4,nullptr);
+    
+    auto F = [](double E,colVector x) {
+        return x[2]/((E-x[0]) * (E-x[0]) + x[1] * x[1]/4);};
+
+    std::ofstream file;
+
+    file.open("new_data.txt");
+    
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file!" << std::endl;
+        return 1;
+    }
+    for (int E = 101; E < 160; E++) {
+        file << E << " " << F(E,higgs) << "\n";
+    }
+
+    file.close();
+
+
+
 
     std::cout << "-------------------------------------------" << "\n";
     std::cout << "Homework: Minimization - part A" << "\n";
@@ -52,5 +111,19 @@ int main() {
     std::cout << "The number of iterations to find the minimum is " << counter_himmelblau << ".\n";
     std::cout << "As we see, the numerical values are close to the analytical ones." << "\n"; 
 
+
+
+    std::cout << "-------------------------------------------" << "\n";
+    std::cout << "Homework: Minimization - part B" << "\n";
+    std::cout << "-------------------------------------------" << "\n\n";
+
+    std::cout << "In part B, the data for the Higgs-boson has been fitted" << "\n";
+    std::cout << "to determine its mass, decay width, and scale factor." << "\n";
+    std::cout << "These are the following:" << "\n\n";
+    
+    std::cout << "m = " << higgs[0] << " GeV, Γ = " << higgs[1] << " GeV, and A = " << higgs[2] << "\n\n";
+
+    std::cout << "Additionally, the fit is plotted with the experimental data" << "\n";
+    std::cout << "and can been seen at the folder plots/." << "\n";
     return 0;
 }

@@ -9,7 +9,7 @@
 /* 
 Ordinary Least Squares Fit using QR-decomposition 
 
-Returns vector of coefficients ck
+Returns vector of coefficients ck and covariance matrix
 */
 std::tuple<colVector,matrix> lsfit(std::function<double(double)> fs[], colVector x, colVector y, colVector dy, int size) {
     

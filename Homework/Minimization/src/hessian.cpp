@@ -8,7 +8,7 @@ matrix hessian(std::function<double(colVector)> f, colVector x) {
     matrix H = matrix(n,n);
     colVector gfx = gradient(f,x);
     for (int j = 0; j < n; j++) {
-        double dxj = (1 + std::abs(x[j])) * std::pow(2.0,-13.0);
+        double dxj = std::max((1 + std::abs(x[j])) * 1e-6,1e-6);
         x[j] += dxj;
         colVector dgf = gradient(f,x) - gfx;
         for (int i = 0; i < n; i++) {

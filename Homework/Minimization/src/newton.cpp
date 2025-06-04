@@ -20,7 +20,7 @@ colVector newton(std::function<double(colVector)> f, colVector x, double acc, in
         
         double lambda = 1.0;
         double fx = f(x);
-        while (lambda > 1.0/1024.0) {
+        while (lambda > 1.0/512.0) {
             if (f(x + lambda * dx) < fx) {
                 break;
             }

@@ -22,11 +22,39 @@ MAIN_OBJ = obj/main.o
 # Executable files
 MAIN = exe/main
 
-all: folders $(MAIN)
+all: folders $(MAIN) experimental.svg 
 
 folders:
 	mkdir -p exe
 	mkdir -p obj
+	mkdir -p plots
+
+fit.svg:
+	echo '\
+			set terminal $(subst .,,$(suffix $@)) background "white"; \
+			set output "plots/$@"; \
+			set grid;\
+			set key right;\
+			set xlabel "Energy (GeV)";\
+			set ylabel "Signal (certain units)";\
+			set title "The Higgs Particle";\
+			plot \
+				"new_data.txt" using 1:2 with lines title "Fit" \
+		' | gnuplot
+
+experimental.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "Energy (GeV)";\
+		set ylabel "Signal (certain units)";\
+		set title "The Higgs Particle";\
+		plot \
+			"data.txt" every::1 using 1:2:3 with yerrorbars title "Experimental data", \
+			"new_data.txt" using 1:2 with lines title "Fit" \
+	' | gnuplot
 
 # Create executable
 $(MAIN): $(MATRIX_OBJ) $(QR_OBJ) $(NEWTON_OBJ) $(GRADIENT_OBJ) $(HESSIAN_OBJ) $(MAIN_OBJ)
@@ -59,7 +87,7 @@ $(MAIN_OBJ): $(MAIN_SRC)
 
 # Clean object files and executable
 clean:
-	@rm -rf exe obj out.txt
+	@rm -rf exe obj plots out.txt new_data.txt
 
 # Phony targets
 .PHONY: all clean
