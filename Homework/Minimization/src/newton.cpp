@@ -6,19 +6,21 @@
 #include<tuple>
 
 colVector newton(std::function<double(colVector)> f, colVector x, double acc) {
-
+    matrix H;
+    colVector g;
     while (true) {
-        colVector g = gradient(f,x);
+        g = gradient(f,x);
         if (norm(g) < acc) {
             break;
         }
-        matrix H = hessian(f,x);
+        H = hessian(f,x);
         std::tuple<matrix,matrix> QR = decomp(H);
         colVector dx = solve(std::get<0>(QR),std::get<1>(QR),-1 * g);
         
         double lambda = 1.0;
+        double fx = f(x);
         while (lambda > 1.0/1024.0) {
-            if (f(x + lambda * dx) < f(x)) {
+            if (f(x + lambda * dx) < fx) {
                 break;
             }
             lambda /= 2.0;
