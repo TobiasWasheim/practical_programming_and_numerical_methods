@@ -5,9 +5,10 @@
 
 #include<tuple>
 
-colVector newton(std::function<double(colVector)> f, colVector x, double acc) {
+colVector newton(std::function<double(colVector)> f, colVector x, double acc, int* counter) {
     matrix H;
     colVector g;
+    
     while (true) {
         g = gradient(f,x);
         if (norm(g) < acc) {
@@ -26,6 +27,10 @@ colVector newton(std::function<double(colVector)> f, colVector x, double acc) {
             lambda /= 2.0;
         }
         x = x + lambda * dx;
+        if (counter != nullptr) {
+            (*counter)++;
+        }
+        
     }
     return x;
 }

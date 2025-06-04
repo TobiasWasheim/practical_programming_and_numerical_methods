@@ -13,6 +13,7 @@ Below you can see the minimum point that is computed numerically
 using Newton's minimization method.
 4.99902
 24.9902
+The number of iterations to find the minimum is 2002.
 The himmelbalu function
 
 f(x,y) = (x^2 + y - 11)^2 + (x + y^2 - 7)^2,
@@ -21,4 +22,5 @@ has five extremum points. We are going to find the point
 (-0.27,-0.92) numerically. The numerical point can be seen below.
 -0.270836
 -0.922993
+The number of iterations to find the minimum is 10569.
 As we see, the numerical values are close to the analytical ones.
