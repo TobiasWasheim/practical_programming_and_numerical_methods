@@ -19,7 +19,7 @@ public:
     vector(std::vector<double> list) : elements(list), is_null(false) {} 
     bool isNull() const { return is_null; }
     /*Return size of vector*/
-    int size();
+    const int size();
     double& operator[](int index);
     void print();
 };

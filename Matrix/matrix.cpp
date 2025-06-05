@@ -6,7 +6,7 @@
 
 /*          Vector class methods        */
 
-int vector::size() {
+const int vector::size() {
     return elements.size();
 }
 
