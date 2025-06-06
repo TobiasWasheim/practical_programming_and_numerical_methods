@@ -10,7 +10,8 @@ class ann {
     int n;
 
     /* activation function for hidden neurons */
-    std::function<double(double)> f = [&](double x) {return x * std::exp(-x * x);};
+    std::function<double(double)> f = [&](double x) {
+        return std::cos(5 * x) * std::exp(-x * x);};
     
     std::function<double(double, colVector)> F = [this](double x, colVector z) {
         double sum = 0;

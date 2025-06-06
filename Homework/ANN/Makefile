@@ -41,8 +41,8 @@ plot.svg:
 			set ylabel "Signal (certain units)";\
 			set title "Neural Network fit";\
 			plot \
-				"out.txt" using 1:2 with points title "NN", \
-				"out.txt" using 1:3 with lines title "f(x)"\
+				"data.txt" using 1:2 with points title "NN", \
+				"data.txt" using 1:3 with lines title "f(x)"\
 		' | gnuplot
 
 # Create executable
