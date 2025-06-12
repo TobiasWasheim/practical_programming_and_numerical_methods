@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+Homework: OLS - part A
+--------------------------------------------------------------------------------
+
+In part A we have implemented ordinary least squares fit using QR-decomposition.
+To show that it works we have fitted the data from measurements of ThX activity.
+
+The plot of the measurements can be seen in the folder 'plots/'. Using OLS the  
+fitting coefficients are printed below.                                         
+
+ln(a) = 142.404,
+lambda: 0.170624.
+The half-life of ThX from the fitting is 
+
+T_(1/2) = 4.06242 days.
+
+The modern value is 3.66 days.           
+
+--------------------------------------------------------------------------------
+Homework: OLS - part B
+--------------------------------------------------------------------------------
+
+In part B we have modified the ordinary least least squares method to calculate 
+and return the covariance matrix. The uncertainty on the fitting coefficients   
+are                                                                             
+
+log(a) uncertainty = 0.0012533
+Lambda uncertainty = 5.12172e-05
+
+The uncertainty for the half-life is    
+
+T_(1/2) uncertainty = 0.00121944days.
+
+are                                                                             
+
+The modern half-life uncertainty for ThX is 0.0014 days. Comparing the modern   
+value for the half-life from the fit and its uncertainty we see that the values 
+does not agree within the estimated uncertainty.                                
+
+Source for ThX modern value and half life: NIST

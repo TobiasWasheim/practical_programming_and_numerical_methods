@@ -1,24 +1,33 @@
--------------------------------------------
+--------------------------------------------------------------------------------
 Homework: ODE - part A
--------------------------------------------
+--------------------------------------------------------------------------------
 
-In part A of this homework I have implemented a
-stepper (RK12) and a driver with adaptive step-
-size. In order to show that it works, I have 
-solved the ODE u'' = -u with initial conditions
-u(0) = 1 and u'(0) = 0. It can be seen at the
-location plots/HarmonicOscillator.svg/
+In part A of this homework I have implemented a stepper (RK12) and a driver with
+with adaptive step size. In order to show that it works, I have solved the ODE  
+u'' = -u with initial conditions u(0) = 1 and u'(0) = 0. It can be seen at      
+location 'plots/HarmonicOscillator.svg/'. The analytical solution to this ODE is
+
+x(t) = cos(x),                                                                  
+v(t) = -sin(x).                                                                 
+
+These are of course also plotted and it can be seen that the numerical and      
+analytical solution are the same.                                               
+Also, when we use Scipy's integrate ODE solver we get the same result as the one
+we implemented (look at 'plots/harmonic_oscillator_plot_python.svg').           
 
 
--------------------------------------------
+--------------------------------------------------------------------------------
 Homework: ODE - part B
--------------------------------------------
+--------------------------------------------------------------------------------
 
-In part B I have solved the equatorial equation
-from GR for motion around a star. I have plotted
-three cases:
-  - conditions ε = 0, u(0) = 1, u'(0) = 0
-  - conditions ε = 0, u(0) = 1, u'(0) = -0.5
-  - conditions ε = 0.01, u(0) = 1, u'(0) = -0.5
+In part B I have solved the equatorial equation from GR for motion around a     
+star. I have plotted three cases (different initial conditions):                
+  - conditions ε = 0, u(0) = 1, u'(0) = 0                                       
+  - conditions ε = 0, u(0) = 1, u'(0) = -0.5                                    
+  - conditions ε = 0.01, u(0) = 1, u'(0) = -0.5                                 
 
-The plots can be seen in the folder plots/.
+The plots can be seen in the folder plots/. In the first case, we simply get a  
+straight line as the velocity u' is zero, the displacement u is non-zero.       
+When u'(0) is non-zero we get circular motion (actually eleptical).             
+When u'(0) is non-zero and ε is non-zero we get some sort of spiraling.         
+

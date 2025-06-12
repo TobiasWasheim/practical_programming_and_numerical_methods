@@ -1,0 +1,26 @@
+--------------------------------------------------------------------------------
+Homework: Spline - part A
+--------------------------------------------------------------------------------
+
+In part A, we have implemented the interpolation for the linear spline and the  
+ integral. To test that it works we have plotted the cosine function and its     
+f(x) = cos(x),                                                                  
+F(x) = sin(x).                                                                  
+
+Which can be seen  at 'plots/lspline.svg/'. There it can be seen that the       
+
+numerical and analytical result are close. The implementation of the linear     
+spline works!                                                                   
+--------------------------------------------------------------------------------
+Homework: Spline - part B
+--------------------------------------------------------------------------------
+
+In part B the quadratic spline has been implemented. To test that it works we   
+have plotted the cosine function, its integral, and its derivative.             
+
+f(x) = cos(x),                                                                  
+F(x) = sin(x).                                                                  
+f'(x) = -sin(x)                                                                 
+
+It can be seen at 'plots/qspline.svg/' and it can be seen that the numerical   
+solution is close to the analytical solution.                                  

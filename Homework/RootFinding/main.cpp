@@ -1,5 +1,8 @@
 #include<iostream>
+#include<functional>
+
 #include"NewtonsMethod.h"
+#include"../ODE/ODE.h"
 
 
 int main() {
@@ -26,7 +29,55 @@ int main() {
 
     colVector start({10,0.5});
 
-    colVector newtonRosenbrock = NewtonsMethod(rosenbrock, start);
+    colVector newtonRosenbrock = NewtonsMethod(rosenbrock, start,1e-3,colVector());
+
+
+    /* 
+            Part B: Bound states of hydrogen atom with shooting method
+
+
+            Boundary conditions: f(r_min) = r_min - r_min * r_min and f(r_max) = 0
+
+            Let's say r_max = 8
+    */
+    double E, a;
+    double r_min = 0;
+    double r_max = 8;   
+
+    colVector ya = {a-a*a,1.0 - 2.0 * a};
+    
+    
+    std::function<colVector(double, colVector)> f = [E](double r, colVector y) {
+        
+        colVector dydr(2);
+
+        dydr[0] = y[1];
+        dydr[1] = -2 * (E + 1.0/r) * y[0];
+
+        return dydr;
+    };
+
+    std::function<colVector(colVector)> M = [](colVector E) {
+        
+        colVector F(1);
+        
+        F[0] = E[0] - E[0] * E[0];
+        
+        return F;
+    };
+
+    // We solve the differential equation for some random energy E and check if f(r_max = 8) = -56
+    
+    std::tuple<colVector,std::vector<colVector>> test = driver(f,a,ya,r_max);
+
+
+
+
+
+
+
+
+
 
     std::cout << "-------------------------------------------" << "\n";
     std::cout << "Homework: Root Finding - part A" << "\n";
@@ -51,15 +102,15 @@ int main() {
     std::cout << "and four local minima at (3,2), (-2.81,3.13), (-3.78,-3.28), and" << "\n";
     std::cout << "(3.58,-1.85). Below the maximum and four minima points are printed" << "\n";
     std::cout << "that are found numerically:" << "\n";
-    NewtonsMethod(himmelblau,start).print();
+    // NewtonsMethod(himmelblau,{-0.27,-0.9},1e-6,colVector()).print();
+    // std::cout << "\n";
+    NewtonsMethod(himmelblau,{3,3},1e-3,colVector()).print();
     std::cout << "\n";
-    NewtonsMethod(himmelblau,{3,3}).print();
+    NewtonsMethod(himmelblau,{-2,3},1e-3,colVector()).print();
     std::cout << "\n";
-    NewtonsMethod(himmelblau,{-2,3}).print();
+    NewtonsMethod(himmelblau,{-3,-3},1e-3,colVector()).print();
     std::cout << "\n";
-    NewtonsMethod(himmelblau,{-3,-3}).print();
-    std::cout << "\n";
-    NewtonsMethod(himmelblau,{4,-2}).print();
+    NewtonsMethod(himmelblau,{4,-2},1e-3,colVector()).print();
     std::cout << "\n\n" << "The roots found using Newton's method are close to the analytical values." << "\n"; 
 
     return 0;

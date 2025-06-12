@@ -1,12 +1,13 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra
+CXXFLAGS = -std=c++20 -O0 -ffast-math
+LDLIBS = -lstdc++ -lm
 
 # Source files
 MATRIX_SRC = ../../Matrix/matrix.cpp
-QR_SRC = EVD.cpp # Assuming your QR class is in EVD.cpp
-MAIN_SRC = partA.cpp
-HYDROGEN_SRC = partB.cpp # Add hydrogen.cpp
+QR_SRC = src/EVD.cpp # Assuming your QR class is in EVD.cpp
+MAIN_SRC = src/main.cpp
+HYDROGEN_SRC = src/HydrogenAtom.cpp # Add hydrogen.cpp
 
 # Header files
 MATRIX_HDR = ../../Matrix/matrix.h
@@ -14,28 +15,26 @@ MATRIX_HDR = ../../Matrix/matrix.h
 # Object files
 MATRIX_OBJ = obj/matrix.o
 QR_OBJ = obj/EVD.o
-MAIN_OBJ = obj/partA.o
-HYDROGEN_OBJ = obj/partB.o # Add hydrogen.o
+MAIN_OBJ = obj/main.o
+HYDROGEN_OBJ = obj/hydrogenAtom.o # Add hydrogen.o
 
-#Text files
-PART_A_OUTPUT = txt/partA.txt
-PART_B_OUTPUT = txt/partB.txt
+# Text files
+DATA = data.txt
 
 # Executable names
-TARGET = exe/partA
-HYDROGEN_TARGET = exe/partB # Corrected executable name
+MAIN = exe/main
+HYDROGEN = exe/HydrogenAtom # Corrected executable name
 
 # Default target
-all: folders $(TARGET) $(HYDROGEN_TARGET) psi.svg dr.svg rmax.svg
+all: folders $(MAIN) $(HYDROGEN) psi.svg dr.svg rmax.svg
 	
 # Create folders
 folders:
-	mkdir -p txt
 	mkdir -p obj
 	mkdir -p exe
 	mkdir -p plots
 
-psi.svg: $(PART_B_OUTPUT)
+psi.svg: $(DATA)
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "plots/$@"; \
@@ -48,7 +47,7 @@ psi.svg: $(PART_B_OUTPUT)
 			"$<" every :::2::2 using 1:2 with linespoints pointtype 7 title "Wave function for ground state",\
 	' | gnuplot	
 
-dr.svg: $(PART_B_OUTPUT)
+dr.svg: $(DATA)
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "plots/$@"; \
@@ -63,12 +62,13 @@ dr.svg: $(PART_B_OUTPUT)
 			-0.5 with lines title "Analytical Method"\
 	' | gnuplot
 
-rmax.svg: $(PART_B_OUTPUT)
+rmax.svg: $(DATA)
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "plots/$@"; \
 		set grid;\
 		set key top left;\
+		set yrange [-0.1:-0.55];\
 		set xlabel "r [Bohr radius]";\
 		set ylabel "Hartee Energy [E_h]";\
 		set title "Hydrogen Atom Ground Energy For Different Radii";\
@@ -82,40 +82,34 @@ rmax.svg: $(PART_B_OUTPUT)
 
 
 # Create main executable
-$(TARGET): $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ) 
-	$(CXX) $(CXXFLAGS) $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ) -o $@
-	./$@ > output.txt
-
+$(MAIN): $(MATRIX_OBJ) $(QR_OBJ) $(MAIN_OBJ) 
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$(MAIN) > out.txt
 
 # Create hydrogenAtom executable
-$(HYDROGEN_TARGET): $(MATRIX_OBJ) $(QR_OBJ) $(HYDROGEN_OBJ)
-	$(CXX) $(CXXFLAGS) $(MATRIX_OBJ) $(QR_OBJ) $(HYDROGEN_OBJ) -o $@
-	./$@ > $(PART_B_OUTPUT)
-
+$(HYDROGEN): $(MATRIX_OBJ) $(QR_OBJ) $(HYDROGEN_OBJ)
+	$(CXX) $^ $(LDLIBS) -o $@
+	./$(HYDROGEN) > $(DATA)
 
 # Compile HydrogenAtom.cpp
-$(HYDROGEN_OBJ): $(HYDROGEN_SRC) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(HYDROGEN_SRC) -o $@
-
+$(HYDROGEN_OBJ): $(HYDROGEN_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Compile main.cpp
-$(MAIN_OBJ): $(MAIN_SRC) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $@
-
+$(MAIN_OBJ): $(MAIN_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Compile matrix.cpp to matrix.o
-$(MATRIX_OBJ): $(MATRIX_SRC) $(MATRIX_HDR) 
-	$(CXX) $(CXXFLAGS) -c $(MATRIX_SRC) -o $(MATRIX_OBJ)
-
+$(MATRIX_OBJ): $(MATRIX_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Compile EVD.cpp to EVD.o
-$(QR_OBJ): $(QR_SRC) $(MATRIX_HDR)
-	$(CXX) $(CXXFLAGS) -c $(QR_SRC) -o $@
-
+$(QR_OBJ): $(QR_SRC)
+	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Clean object files and executables
 clean: 
-	@rm -rf plots exe obj txt
+	@rm -rf plots exe obj txt out.txt data.txt
 
 # Phony targets
 .PHONY: all clean

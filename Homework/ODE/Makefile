@@ -5,8 +5,8 @@ LDLIBS = -lstdc++ -lm
 
 # Source files
 MATRIX_SRC = ../../Matrix/matrix.cpp
-ODE_SRC = ODE.cpp 
-MAIN_SRC = main.cpp 
+ODE_SRC = src/ODE.cpp 
+MAIN_SRC = src/main.cpp 
 
 # Object files
 MATRIX_OBJ = obj/matrix.o
@@ -17,7 +17,7 @@ MAIN_OBJ = obj/main.o
 MAIN = exe/main
 
 # Default target
-all: folders $(MAIN) plots
+all: folders $(MAIN) Python plots
 
 plots: HarmonicOscillator.svg equatorial_part_B1.svg equatorial_part_B2.svg equatorial_part_B3.svg
 	
@@ -36,8 +36,10 @@ HarmonicOscillator.svg:
 		set ylabel "y (arb. unit)";\
 		set title "Harmonic Oscillator  with Conditions u(0) = 1, u'\''(0) = 0";\
 		plot \
-			"data.txt" every :::0::0 using 1:2 with lines title "Displacement",\
-			"data.txt" every :::0::0 using 1:3 with lines title "Velocity" \
+			cos(x) with points title "x(t) - analytical",\
+			-sin(x) with points title "v(t) - analytical",\
+			"data.txt" every :::0::0 using 1:2 with lines title "x(t) - numerical",\
+			"data.txt" every :::0::0 using 1:3 with lines title "v(t) - numerical" \
 	' | gnuplot
 
 equatorial_part_B1.svg:
@@ -78,6 +80,9 @@ equatorial_part_B3.svg:
 		plot \
 			"data.txt" every :::3::3 using (1/$$2)*cos($$1):(1/$$2)*sin($$1) with lines title "u(φ)", \
 	' | gnuplot
+
+Python: 
+	python3 src/pyODE.py
 
 # Create executable
 $(MAIN): $(MATRIX_OBJ) $(ODE_OBJ) $(MAIN_OBJ) 
