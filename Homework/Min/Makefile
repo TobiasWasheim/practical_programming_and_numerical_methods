@@ -6,60 +6,70 @@ LDLIBS = -lstdc++ -lm
 # Source files
 MATRIX_SRC = ../../Matrix/matrix.cpp
 QR_SRC = ../QR/src/QR.cpp
-NEWTON_SRC = ../Min/src/newton.cpp
-GRADIENT_SRC = ../Min/src/gradient.cpp
-HESSIAN_SRC = ../Min/src/hessian.cpp
-ANN_SRC = ANN.cpp
-MAIN_SRC = main.cpp
+NEWTON_SRC = src/newton.cpp
+GRADIENT_SRC = src/gradient.cpp
+HESSIAN_SRC = src/hessian.cpp
+MAIN_SRC = src/main.cpp
 
 # Object files
 MATRIX_OBJ = obj/matrix.o
-QR_OBJ = QR.o
+QR_OBJ = obj/QR.o
 NEWTON_OBJ = obj/newton.o
 GRADIENT_OBJ = obj/gradient.o
 HESSIAN_OBJ = obj/hessian.o
-ANN_OBJ = obj/ANN.o
 MAIN_OBJ = obj/main.o
 
-# Executable
+# Executable files
 MAIN = exe/main
 
-all: folders $(MAIN) plot.svg
+all: folders $(MAIN) experimental.svg 
 
 folders:
 	mkdir -p exe
-	mkdir -p plots
 	mkdir -p obj
+	mkdir -p plots
 
-plot.svg:
+fit.svg:
 	echo '\
 			set terminal $(subst .,,$(suffix $@)) background "white"; \
 			set output "plots/$@"; \
 			set grid;\
 			set key right;\
-			set xlabel "x";\
-			set ylabel "y";\
-			set title "Neural Network fit";\
+			set xlabel "Energy (GeV)";\
+			set ylabel "Signal (certain units)";\
+			set title "The Higgs Particle";\
 			plot \
-				"data.txt" using 1:2 with points title "NN", \
-				"data.txt" using 1:4 with lines title "f(x)",\
+				"data/new_data.txt" using 1:2 with lines title "Fit" \
 		' | gnuplot
 
+experimental.svg:
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key right;\
+		set xlabel "Energy (GeV)";\
+		set ylabel "Signal (certain units)";\
+		set title "The Higgs Particle";\
+		plot \
+			"data/data.txt" every::1 using 1:2:3 with yerrorbars title "Experimental data", \
+			"data/new_data.txt" using 1:2 with lines title "Fit" \
+	' | gnuplot
+
 # Create executable
-$(MAIN): $(MATRIX_OBJ) $(QR_OBJ) $(NEWTON_OBJ) $(GRADIENT_OBJ) $(HESSIAN_OBJ) $(ANN_OBJ) $(MAIN_OBJ) 
+$(MAIN): $(MATRIX_OBJ) $(QR_OBJ) $(NEWTON_OBJ) $(GRADIENT_OBJ) $(HESSIAN_OBJ) $(MAIN_OBJ)
 	$(CXX) $^ $(LDLIBS) -o $@
 	./$(MAIN) > out.txt
 
-
-# Compile matrix.o
+# Compile matrix
 $(MATRIX_OBJ): $(MATRIX_SRC)
 	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
-# Compile QR decomp
+# Compile QR-decomposition
 $(QR_OBJ): $(QR_SRC)
 	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
-# Compile newton
+# Compile Newton
 $(NEWTON_OBJ): $(NEWTON_SRC)
 	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
@@ -71,17 +81,14 @@ $(GRADIENT_OBJ): $(GRADIENT_SRC)
 $(HESSIAN_OBJ): $(HESSIAN_SRC)
 	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
-# Comple ANN
-$(ANN_OBJ): $(ANN_SRC)
-	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
-
 # Compile main
 $(MAIN_OBJ): $(MAIN_SRC)
 	$(CXX) $(CXXFLAGS) -c $(filter %.cpp,$^) -o $@
 
 # Clean object files and executable
 clean:
-	rm -rf plots exe obj data.txt out.txt
+	@rm -rf exe obj plots out.txt data/new_data.txt
 
 # Phony targets
 .PHONY: all clean
+
