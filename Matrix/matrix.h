@@ -91,6 +91,8 @@ public:
     matrix operator+(matrix& other);
     matrix operator-(matrix& other);
     matrix operator/(const double& num);
+
+    void update(colVector v, colVector u, double s = 1);
     
 
 

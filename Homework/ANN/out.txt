@@ -8,4 +8,29 @@ implemented. To test it, we try to interpolate the function
 f(x) = cos(5x - 1) exp(-x^2),
 
 We have plotted the interpolation and the function on the plot at
-plots/plot.svg.
+plots/partA.svg where we see that the neural network fits quite well.
+
+Since the minimization function from the homework 'Min' is unstable,
+there has been implemented the quasi-Newton method using symmetic Broyden's update.
+
+
+-------------------------------------------
+Homework: ANN - part B
+-------------------------------------------
+
+In part b, we have implemented the first, second, and anti-derivative of 
+a function fitted in the neural network. Since the function in part A
+does not have an anti-derivative that is easy to find analytically, we
+resort to a much simpler function to showcase that the derivatives work
+that are estimated from the neural network. This should however, not be an
+issue, since we would expect that if the derivatives fit for a simpler function
+it should also fit for more interesting functions. We use the function
+
+f(x) = cos(2x)
+
+We can see that the first derivative fits quite well in the plot at plots/first_derivative.svg/.
+Also, the second derivative also fits nicely compared to the analytical solution. This can
+be seen on the plot at plots/second_derivative.svg/. At last, we have also plotted the anti-derivative
+for the cosine-function at plots/anti_derivative.svg/. We see here compared to the analytical result it
+it is similar. To clarify the integral: The integral we have plotted is the integral of cos(2x') from 0 to x.
+This integral has the analytical solution 0.5 * sin(2x).

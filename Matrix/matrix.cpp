@@ -115,6 +115,14 @@ colVector colVector::map(std::function<double(double)> f) {
 
 /*              Matrix class                */
 
+void matrix::update(colVector u, colVector v, double s) {
+    for (int i = 0; i < rows(); i++) {
+        for (int j = 0; j < cols(); j++) {
+            elements[j][i] += u[i] * v[j] * s;
+        }
+    }
+}
+
 int matrix::cols() {
     return elements.size();
 }

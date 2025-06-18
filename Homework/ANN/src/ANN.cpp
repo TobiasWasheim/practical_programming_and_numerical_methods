@@ -1,8 +1,5 @@
-#include"ANN.h"
-#include"../Min/hdr/newton.h"
-#include"../Min/hdr/gradient.h"
-#include"../Min/hdr/hessian.h"
-#include"../QR/hdr/QR.h"
+#include"../hdr/ANN.h"
+#include"../hdr/qnewton.h"
 
 #include<functional>
 #include<cmath>
@@ -20,6 +17,16 @@
         return F_deriv(x,p);
     }
 
+    double ann::double_derivative(double x) {
+
+        return F_double_deriv(x,p);
+    }
+
+    double ann::integrate(double x) {
+
+        return F_int(x,p);
+    }
+
     void ann::train(colVector x, colVector y) {
         /* train the network to interpolate the given table {x,y} */
 
@@ -27,8 +34,8 @@
         for (int i = 0; i < n; i++) {
             
             p[i] = x[0] + (x[x.size()-1] - x[0]) * i / (n-1);
-            p[i+n] = 10;
-            p[i+2*n] = 10;
+            p[i+n] = 1;
+            p[i+2*n] = 1;
         }
         std::function<double(colVector)> costFunction = [&x, &y,this](colVector z) {
             double result = 0;
@@ -38,8 +45,7 @@
             return result;
         };
 
-        p = newton(costFunction, p,0.1,nullptr,10000);
-        //p.print();
+        p = qnewton(costFunction, p,0.1,10000);
     };
 
 
