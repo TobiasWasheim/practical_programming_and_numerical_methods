@@ -44,6 +44,17 @@ double qspline::derivative(double z) {
     return b + 2 * c[i] * (z - x[i]);
 }
 
+double cspline::evaluate(double z) {
+    int i = binsearch(x, z);
+
+    return y[i] + b[i] * (z - x[i]) + c[i] * (z - x[i])* (z - x[i]) + d[i] * (z-x[i]) * (z-x[i]) * (z-x[i]);
+}
+
+double cspline::derivative(double z) {
+    int i = binsearch(x,z);
+    return b[i] + 2 * c[i] * (z - x[i]) + 3 * d[i] * (z - x[i]) * (z - x[i]);
+}
+ 
 
 int binsearch(const std::vector<double> x, double z) {
 
