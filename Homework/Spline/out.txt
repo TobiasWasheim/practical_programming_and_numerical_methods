@@ -3,9 +3,11 @@ Homework: Spline - part A
 --------------------------------------------------------------------------------
 
 In part A, we have implemented the interpolation for the linear spline and the  
- integral. To test that it works we have plotted the cosine function and its     
-f(x) = cos(x),                                                                  
-F(x) = sin(x).                                                                  
+ integral. To test that it works we have plotted the gaussian function and its   
+integral from x[0] to x                                                           
+
+f(x) = exp(-x^2),                                                               
+F(x) = 1/2 * sqrt(PI) * (erf(x) + erf(5))                                       
 
 Which can be seen  at 'plots/lspline.svg/'. There it can be seen that the       
 
@@ -16,11 +18,26 @@ Homework: Spline - part B
 --------------------------------------------------------------------------------
 
 In part B the quadratic spline has been implemented. To test that it works we   
-have plotted the cosine function, its integral, and its derivative.             
+have plotted the gaussian function, its integral, and its derivative.           
 
-f(x) = cos(x),                                                                  
-F(x) = sin(x).                                                                  
-f'(x) = -sin(x)                                                                 
+f(x) = exp(-x^2),                                                               
+F(x) = 1/2 * sqrt(PI) * (erf(x) + erf(5))                                       
+f'(x) = -2 * x * exp(-x^2)                                                      
 
 It can be seen at 'plots/qspline.svg/' and it can be seen that the numerical   
 solution is close to the analytical solution.                                  
+
+--------------------------------------------------------------------------------
+Homework: Spline - part C
+--------------------------------------------------------------------------------
+
+In part C, we have implemented the interpoklation of the cubic spline, its      
+derivative, and the integral of the gaussian function                           
+
+f(x) = exp(-x^2),                                                               
+F(x) = 1/2 * sqrt(PI) * (erf(x) + erf(5))                                       
+f'(x) = -2 * x * exp(-x^2)                                                      
+
+It can be seen at 'plots/cspline.svg/' that the numerical result is close to the
+analytical result. We also compare the cubic spline to Gnuplot's own cubic spline
+routine we see that the methods overlap substantially at 'plots/gnuplot.svg/'.  

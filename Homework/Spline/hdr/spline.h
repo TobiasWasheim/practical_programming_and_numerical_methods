@@ -109,7 +109,7 @@ class cspline {
             dx.resize(n-1);
             dy.resize(n-1);
 
-            D.resize(n);
+                D.resize(n);
             B.resize(n);
             D_tilde.resize(n);
             B_tilde.resize(n);
@@ -147,7 +147,7 @@ class cspline {
 
         // Compute the b's 
         b[n-1] = B_tilde[n-1]/D_tilde[n-1];
-        for (int i = n-1; i >= 0 - 1; i--) {
+        for (int i = n-2; i >= 0; i--) {
             b[i] = (B_tilde[i] - Q[i] * b[i+1]) / D_tilde[i];
         }
 
