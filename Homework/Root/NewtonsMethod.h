@@ -5,7 +5,7 @@
 #include<limits>
 #include<cmath>
 #include"../../Matrix/matrix.h"
-#include"../LinearEquations/QR.h"
+#include"../QR/hdr/QR.h"
 
 matrix Jacobian(std::function<colVector(colVector)> f, colVector x, colVector fx = colVector(), colVector dx = colVector());
 
