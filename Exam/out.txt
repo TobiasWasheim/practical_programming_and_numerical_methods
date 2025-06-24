@@ -1,9 +1,83 @@
-Eigenvalue from iteration method = 21.0578
-Jacobian method routine: 
+--------------------------------------------------------------------------------
+Exam: Inverse Iteration - Implementation of Algorithm
+--------------------------------------------------------------------------------
+
+We have implemented the algorithm in the file 'inverseIteration.cpp'. In order  
+to see if it works we test it by generating a random symmetrix 5x5 matrix and   
+calculate the eigenvalue closest to the shift-value s = 1. In order to see if we
+indeed get the correct eigenvalue we compare it to the eigenvalues obtained from
+from our EVD-routine that was created in one of the homeworks.                  
+
+The matrix which we generate is printed below:                                  
+
+3.2 5.6 4.4 9.1 2.5 
+5.6 0.8 3.9 0.1 5.8 
+4.4 3.9 6.5 0.5 2 
+9.1 0.1 0.5 8.9 5.1 
+2.5 5.8 2 5.1 3.8 
+
+next, the eigenvalue that we get from our inverse-iteration routine with a shift
+value s = 1 is                                                                  
+
+Eigenvalue = 3.13222 where s = 1                                   
+
+In order to see if we get the correct eigenvalue we compare it to the eigen-    
+values which we obtain by computing the diagonal matrix from our EVD routine.   
+The diagonal matrix can be seen below.                                          
+
+D =                                                                              
 -7.87656 0 0 0 0 
 0 -1.33322 0 0 0 
 0 0 3.13665 0 0 
 0 0 0 8.21527 0 
 0 0 0 0 21.0578 
-Hamiltonian Energy eigenvalue
--0.498376
+
+When we look at the diagonal matrix we see that we get the same eigenvalue and   
+that is the closest eigenvalue compared to the shift-value s = 1.                
+
+Additionally, the algorithm also gives the eigenvector. In the case of s = 1 we  
+get the eigenvector                                                              
+
+2.88984e-21
+-3.55344e-21
+4.76092e-21
+1.86143e-21
+-7.58306e-21
+
+Now, we compare this eigenvector to the result of the EVD routine. From that we 
+we get the eigenvector                                                          
+
+0.265464
+-0.363828
+0.479586
+0.190336
+-0.728648
+
+We see that we get the same eigenvector, except it not normalized like the one  
+from our EVD method. By normalizing the eigenvector from the inverse iteration  
+routine by multiplying with a factor of 1e20 we get that it becomes             
+
+0.288984
+-0.355344
+0.476092
+0.186143
+-0.758306
+
+Which is close to the same eigenvector from the EVD routine (with an error of   
+roughly 0.2). We conclude that our inverse iteration algorithm works!           
+
+
+--------------------------------------------------------------------------------
+Exam: Inverse Iteration - Application to schrodinger's equation
+--------------------------------------------------------------------------------
+
+In this part we apply our routine to find the energy-eigenvalue closest to -1 which
+we excpect to be the one with the lowest energy E0 = -0.5. We print the eigenvalue 
+below.                                                                             
+
+E = -0.498376 where s = -1.0                                                     
+
+We see that we get the eigenvalue that matches (almost) ground state energy. To    
+build the Hamiltonian we used the same procedure as the EVD homework part B.       
+
+

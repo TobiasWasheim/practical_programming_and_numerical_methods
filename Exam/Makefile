@@ -8,8 +8,8 @@ MATRIX_SRC = ../Matrix/matrix.cpp
 EVD_SRC = ../Homework/EVD/src/EVD.cpp
 QR_SRC = ../Homework/QR/src/QR.cpp
 EVD_SRC = ../Homework/EVD/src/EVD.cpp
-INVERSE_SRC = InverseIteration.cpp
-MAIN_SRC = main.cpp 
+INVERSE_SRC = src/InverseIteration.cpp
+MAIN_SRC = src/main.cpp 
 
 # Object files
 MATRIX_OBJ = obj/matrix.o

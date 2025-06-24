@@ -1,5 +1,5 @@
-#include"InverseIteration.h"
-#include"../Homework/QR/hdr/QR.h"
+#include"../hdr/InverseIteration.h"
+#include"../../Homework/QR/hdr/QR.h"
 
 colVector randomVector(int size) {
     colVector x(size);
@@ -9,7 +9,6 @@ colVector randomVector(int size) {
         x[i] = num;
     }
     return x;
-
 }
 
 double rayLeighQuotient(colVector x0, colVector x1) {
