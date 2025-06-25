@@ -41,15 +41,11 @@ plot.svg: timing.data
 		plot \
 			"$<" using (log($$1)):(log($$2)) with lines title "Factorization"\
 	' | gnuplot
+	
 
 
 # Test factorization O(N^3)
-timing.data: $(TIMING)
-	>$@
-	for N in $$(seq 100 20 400); do \
-		time --format "$$N %e" --output $@ --append \
-		./$(TIMING) -size:$$N 1>exe/out 2>exe/err ;\
-    done
+ 
 
 
 # Create executable for main
