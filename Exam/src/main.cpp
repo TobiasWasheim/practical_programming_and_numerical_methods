@@ -77,18 +77,16 @@ int main() {
 
 
     // In part B we determine the energy-eigenvalue from the schrodinger equation
-    std::tuple<matrix,colVector,int> buildH = BuildHamiltonianMatrix(15,0.1);
+    std::tuple<matrix,colVector,int> buildH = BuildHamiltonianMatrix(20,0.1);
     matrix H = std::get<0>(buildH);
 
     std::tuple<double, colVector> ground = InverseAlgorithm(H,-1);
     std::tuple<double, colVector> excited1 = InverseAlgorithm(H,-0.125);
     std::tuple<double, colVector> excited2 = InverseAlgorithm(H,-0.05);
-    std::tuple<double, colVector> excited3 = InverseAlgorithm(H,-0.02);
 
     double E0 = std::get<0>(ground);
     double E1 = std::get<0>(excited1);
     double E2 = std::get<0>(excited2);
-    double E3 = std::get<0>(excited3);
 
     std::tuple<colVector,matrix> H_EVD = cyclic(H);
 
@@ -168,7 +166,6 @@ int main() {
     std::cout << "E0 = " << E0 << " where s = -1.0                                                     " << "\n";
     std::cout << "E1 = " << E1 << " where s = -0.3                                                     " << "\n";
     std::cout << "E2 = " << E2 << " where s = -0.05                                                     " << "\n";
-    std::cout << "E2 = " << E2 << " where s = -0.03                                                     " << "\n";
     std::cout << "\n";
     std::cout << "We see that we get the eigenvalue that matches (almost) ground state energy. To    " << "\n";
     std::cout << "build the Hamiltonian we used the same procedure as the EVD homework part B.       " << "\n";
