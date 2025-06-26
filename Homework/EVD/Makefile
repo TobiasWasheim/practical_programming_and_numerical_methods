@@ -45,6 +45,7 @@ psi.svg: $(DATA)
 		set title "Hydrogen Atom Ground State Wave Function";\
 		plot \
 			"$<" every :::2::2 using 1:2 with linespoints pointtype 7 title "Wave function for ground state",\
+			"$<" every :::2::2 using 1:3 with lines title "Analytical Wave function"\
 	' | gnuplot	
 
 dr.svg: $(DATA)

@@ -71,7 +71,7 @@ int main() {
     matrix orthogonalMatrix = std::get<1>(diagonalizeH);
     for (int i = 0; i < npoints; i++) {
         double f = 1/orthogonalMatrix(10,0)* orthogonalMatrix(i,0);
-        std::cout << r[i] << " " << f << "\n";
+        std::cout << r[i] << " " << f << " " <<  1/0.36 * r[i] * std::exp(-r[i]) << "\n";
     }
 
 

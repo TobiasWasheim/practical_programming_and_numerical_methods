@@ -1,5 +1,155 @@
+0.1 0.0566076
+0.2 0.102462
+0.3 0.139098
+0.4 0.167856
+0.5 0.189905
+0.6 0.206264
+0.7 0.217816
+0.8 0.225329
+0.9 0.229468
+1 0.230809
+1.1 0.229848
+1.2 0.22701
+1.3 0.222664
+1.4 0.217122
+1.5 0.210652
+1.6 0.203481
+1.7 0.195802
+1.8 0.187777
+1.9 0.179542
+2 0.17121
+2.1 0.162873
+2.2 0.15461
+2.3 0.14648
+2.4 0.138535
+2.5 0.130812
+2.6 0.123342
+2.7 0.116145
+2.8 0.109239
+2.9 0.102632
+3 0.0963297
+3.1 0.0903345
+3.2 0.0846447
+3.3 0.0792563
+3.4 0.0741632
+3.5 0.0693579
+3.6 0.0648315
+3.7 0.0605742
+3.8 0.0565755
+3.9 0.0528246
+4 0.0493102
+4.1 0.046021
+4.2 0.0429457
+4.3 0.0400731
+4.4 0.0373922
+4.5 0.0348921
+4.6 0.0325625
+4.7 0.0303933
+4.8 0.0283746
+4.9 0.0264973
+5 0.0247523
+5.1 0.0231312
+5.2 0.0216259
+5.3 0.0202287
+5.4 0.0189324
+5.5 0.0177301
+5.6 0.0166153
+5.7 0.0155821
+5.8 0.0146246
+5.9 0.0137375
+6 0.0129159
+6.1 0.0121549
+6.2 0.0114502
+6.3 0.0107976
+6.4 0.0101934
+6.5 0.00963402
+6.6 0.00911603
+6.7 0.00863637
+6.8 0.00819217
+6.9 0.00778074
+7 0.00739959
+7.1 0.00704642
+7.2 0.00671908
+7.3 0.00641558
+7.4 0.00613409
+7.5 0.0058729
+7.6 0.00563043
+7.7 0.00540523
+7.8 0.00519594
+7.9 0.00500131
+8 0.0048202
+8.1 0.00465155
+8.2 0.00449435
+8.3 0.00434772
+8.4 0.0042108
+8.5 0.00408283
+8.6 0.00396308
+8.7 0.00385091
+8.8 0.00374569
+8.9 0.00364687
+9 0.00355392
+9.1 0.00346637
+9.2 0.00338375
+9.3 0.00330566
+9.4 0.00323172
+9.5 0.00316156
+9.6 0.00309486
+9.7 0.00303129
+9.8 0.00297057
+9.9 0.00291244
+10 0.00285662
+10.1 0.00280288
+10.2 0.002751
+10.3 0.00270076
+10.4 0.00265195
+10.5 0.00260439
+10.6 0.00255788
+10.7 0.00251226
+10.8 0.00246736
+10.9 0.00242301
+11 0.00237907
+11.1 0.00233538
+11.2 0.00229181
+11.3 0.00224822
+11.4 0.00220449
+11.5 0.00216048
+11.6 0.0021161
+11.7 0.00207121
+11.8 0.00202573
+11.9 0.00197954
+12 0.00193256
+12.1 0.00188471
+12.2 0.00183589
+12.3 0.00178604
+12.4 0.0017351
+12.5 0.00168299
+12.6 0.00162968
+12.7 0.00157512
+12.8 0.00151928
+12.9 0.00146212
+13 0.00140363
+13.1 0.00134381
+13.2 0.00128264
+13.3 0.00122013
+13.4 0.00115632
+13.5 0.0010912
+13.6 0.00102484
+13.7 0.00095725
+13.8 0.000888497
+13.9 0.000818637
+14 0.000747733
+14.1 0.000675859
+14.2 0.000603093
+14.3 0.000529521
+14.4 0.000455233
+14.5 0.000380323
+14.6 0.000304891
+14.7 0.000229038
+14.8 0.000152868
+14.9 7.64867e-05
+
 --------------------------------------------------------------------------------
-Exam: Inverse Iteration - Implementation of Algorithm
+Exam: Inverse Iteration - Implementation of Algorithm (part A)
 --------------------------------------------------------------------------------
 
 We have implemented the algorithm in the file 'inverseIteration.cpp'. In order  
@@ -19,7 +169,11 @@ The matrix which we generate is printed below:
 next, the eigenvalue that we get from our inverse-iteration routine with a shift
 value s = 1 is                                                                  
 
-Eigenvalue = 3.13222 where s = 1                                   
+Eigenvalue = -7.87654 where s = -7         
+Eigenvalue = -1.33322 where s = -1         
+Eigenvalue = 3.13625 where s = 1           
+Eigenvalue = 8.21527 where s = 7           
+Eigenvalue = 21.0578 where s = 20         
 
 In order to see if we get the correct eigenvalue we compare it to the eigen-    
 values which we obtain by computing the diagonal matrix from our EVD routine.   
@@ -32,52 +186,52 @@ D =
 0 0 0 8.21527 0 
 0 0 0 0 21.0578 
 
-When we look at the diagonal matrix we see that we get the same eigenvalue and   
-that is the closest eigenvalue compared to the shift-value s = 1.                
+When we look at the diagonal matrix we see that we get eigenvalues that are     
+close to the eigenvalues from the inverse iteration method.                     
 
-Additionally, the algorithm also gives the eigenvector. In the case of s = 1 we  
-get the eigenvector                                                              
+Additionally, the algorithm also gives the eigenvectors. Below we have printed  
+the eigenvectors for all eigenvalues. Column 1 corresponds to the first eigenvalue,
+column 2 corresponds to the second eigenvalue and so on....
 
-2.88984e-21
--3.55344e-21
-4.76092e-21
-1.86143e-21
--7.58306e-21
+0.585333 0.546318 0.258145 0.0420649 0.536174 
+-0.588462 0.515366 -0.36606 -0.384366 0.327553 
+-0.0552516 -0.440579 0.487103 -0.683893 0.324563 
+-0.422057 -0.261946 0.190913 0.613137 0.584331 
+0.360434 -0.416184 -0.725013 -0.0827416 0.398049 
 
-Now, we compare this eigenvector to the result of the EVD routine. From that we 
-we get the eigenvector                                                          
+Now, we compare these eigenvectors to the result of the EVD routine. From that we 
+we get the eigenvectors                                                          
 
-0.265464
--0.363828
-0.479586
-0.190336
--0.728648
+0.584528 0.546449 0.265464 0.0420325 0.536174 
+-0.589207 0.515189 -0.363828 -0.384389 0.32755 
+-0.0546229 -0.440403 0.479586 -0.683901 0.324559 
+-0.421682 -0.261907 0.190336 0.613118 0.584335 
+0.361057 -0.416442 -0.728648 -0.0827303 0.398048 
 
-We see that we get the same eigenvector, except it not normalized like the one  
-from our EVD method. By normalizing the eigenvector from the inverse iteration  
-routine by multiplying with a factor of 1e20 we get that it becomes             
-
-0.288984
--0.355344
-0.476092
-0.186143
--0.758306
-
-Which is close to the same eigenvector from the EVD routine (with an error of   
-roughly 0.2). We conclude that our inverse iteration algorithm works!           
+Which we can see are numerically close the the result from our EVD routine! Based on
+our tests, we conclude that our reverse iteration method works.
 
 
 --------------------------------------------------------------------------------
-Exam: Inverse Iteration - Application to schrodinger's equation
+Exam: Inverse Iteration - Application to schrodinger's equation (part B)
 --------------------------------------------------------------------------------
 
 In this part we apply our routine to find the energy-eigenvalue closest to -1 which
 we excpect to be the one with the lowest energy E0 = -0.5. We print the eigenvalue 
 below.                                                                             
 
-E = -0.498376 where s = -1.0                                                     
+E0 = -0.49844 where s = -1.0                                                     
+E1 = -0.124419 where s = -0.3                                                     
+E2 = -0.0268734 where s = -0.05                                                     
+E2 = -0.0268734 where s = -0.03                                                     
 
 We see that we get the eigenvalue that matches (almost) ground state energy. To    
 build the Hamiltonian we used the same procedure as the EVD homework part B.       
 
 
+--------------------------------------------------------------------------------
+Exam: Inverse Iteration - Timing of the algorithm (part C)
+--------------------------------------------------------------------------------
+
+In this part we've timed the algorithm and the EVD routine which can be seen at 
+'plots/timing.svg/' where we can see that both algorithms goes as O(N^3).       

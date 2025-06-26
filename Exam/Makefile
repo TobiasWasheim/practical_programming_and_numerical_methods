@@ -32,7 +32,7 @@ MAIN = exe/main
 TIMINGEVD = exe/timingEVD
 TIMINGINVERSE = exe/timingINVERSE
 
-all: folders $(MAIN) timing.svg
+all: folders $(MAIN) timing.svg psi.svg
 
 folders:
 	mkdir -p data
@@ -54,10 +54,23 @@ timing.svg: $(DATA)
 			"$^" every:::1::1 using (log($$1)):(log($$2)) with lines title "Inverse"\
 	' | gnuplot
 
+psi.svg: out.txt
+	echo '\
+		set terminal $(subst .,,$(suffix $@)) background "white"; \
+		set output "plots/$@"; \
+		set grid;\
+		set key bottom;\
+		set xlabel "log(N)";\
+		set ylabel "Time (arb. units)";\
+		set title "Timing EVD vs inverse method";\
+		plot \
+			"$^" every:::0::0 using 1:2 with points pointtype 7 title "Ground wave function"\
+	' | gnuplot
+
 
 $(DATA): $(TIMINGEVD) $(TIMINGINVERSE)
 	>$@
-	for N in $$(seq 10 20 350); do \
+	for N in $$(seq 10 20 290); do \
 		time --format "$$N %e" --output $@ --append \
 		./$(TIMINGEVD) -size:$$N 1>exe/out 2>exe/err ;\
     done

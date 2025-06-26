@@ -42,5 +42,9 @@ std::tuple<double,colVector> InverseAlgorithm(matrix A, double s, colVector x0, 
         lambda1 = s + rayLeighQuotient(x0,x1);
         if (std::abs(lambda1 - lambda0) < acc) break;
     }
+
+    // Normalize x1 before returning
+    x1 = x1 / norm(x1);
+
     return std::make_tuple(lambda1, x1);
 }
