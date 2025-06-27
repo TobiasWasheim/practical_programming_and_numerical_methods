@@ -54,17 +54,18 @@ timing.svg: $(DATA)
 			"$^" every:::1::1 using (log($$1)):(log($$2)) with lines title "Inverse"\
 	' | gnuplot
 
-psi.svg: out.txt
+psi.svg: data/psi.txt
 	echo '\
 		set terminal $(subst .,,$(suffix $@)) background "white"; \
 		set output "plots/$@"; \
 		set grid;\
 		set key bottom;\
-		set xlabel "log(N)";\
-		set ylabel "Time (arb. units)";\
-		set title "Timing EVD vs inverse method";\
+		set ylabel "psi(r)";\
+		set xlabel "r (Bohr radius)";\
+		set title "S-wave function";\
 		plot \
-			"$^" every:::0::0 using 1:2 with points pointtype 7 title "Ground wave function"\
+			"$^" every:::0::0 using 1:2 with points pointtype 7 title "Ground wave function",\
+			"$^" every:::0::0 using 1:3 with lines title "Analytical wavefunction"\
 	' | gnuplot
 
 
@@ -135,4 +136,4 @@ $(QR_OBJ): $(QR_SRC)
 
 # Clean object files and executable
 clean:
-	rm -rf exe obj out.txt timing.data plots
+	rm -rf exe obj out.txt plots data

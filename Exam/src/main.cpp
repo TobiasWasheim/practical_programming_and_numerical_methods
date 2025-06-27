@@ -1,4 +1,5 @@
 #include<iostream>
+#include <fstream>
 
 #include"../hdr/InverseIteration.h"
 #include"../../Homework/EVD/hdr/EVD.h"
@@ -96,12 +97,19 @@ int main() {
     colVector r = std::get<1>(buildH);
     int npoints = std::get<2>(buildH);
     // std::cout << eigenvector.size() << "\n";
+    std::ofstream file;
+
+    file.open("data/psi.txt");
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file!" << std::endl;
+        return 1;
+    }
 
     for (int i = 0; i < npoints; i++) {
-        double f = eigenvector[i];
-        std::cout << r[i] << " " << f << "\n";
+        double f = 1 /0.233*eigenvector[i];
+        file << r[i] << " " << f << " " << 1 /0.366 * r[i] * std::exp(-r[i]) << "\n";
     }
-    std::cout << "\n";
+    file.close();
 
 
     
@@ -159,16 +167,19 @@ int main() {
     std::cout << "Exam: Inverse Iteration - Application to schrodinger's equation (part B)" << "\n";
     std::cout << "--------------------------------------------------------------------------------" << "\n\n";
     
-    std::cout << "In this part we apply our routine to find the energy-eigenvalue closest to -1 which" << "\n";
-    std::cout << "we excpect to be the one with the lowest energy E0 = -0.5. We print the eigenvalue " << "\n";
-    std::cout << "below.                                                                             " << "\n";
+    std::cout << "In this part we apply our routine to find the energy-eigenvalue for the ground-state," << "\n";
+    std::cout << "first, and second excited state. From theory we expect that E0 = -1/2 = 0.5, and that" << "\n";
+    std::cout << "E1 = -1/(2*2^2) = -1/8 = 0.125 and E2 = -1/(2*3^2) = -1/18 = -0.0588... The results  " << "\n";
+    std::cout << "are printed below.                                                                   " << "\n";
     std::cout << "\n";
     std::cout << "E0 = " << E0 << " where s = -1.0                                                     " << "\n";
     std::cout << "E1 = " << E1 << " where s = -0.3                                                     " << "\n";
     std::cout << "E2 = " << E2 << " where s = -0.05                                                     " << "\n";
     std::cout << "\n";
-    std::cout << "We see that we get the eigenvalue that matches (almost) ground state energy. To    " << "\n";
-    std::cout << "build the Hamiltonian we used the same procedure as the EVD homework part B.       " << "\n";
+    std::cout << "We see that we get the eigenvalue that matches (almost) energies of the ground state" << "\n";
+    std::cout << "and the excited states for E1 and E2. We have also plotted the s-wave function for  " << "\n";
+    std::cout << "the ground state at 'plots/psi.svg/' and compared to the analytical wave function.  " << "\n";
+    std::cout << "We have built the Hamiltonian using the same procedure as the EVD homework part B.  " << "\n";
     std::cout << "\n";
     std::cout << "\n";
     std::cout << "--------------------------------------------------------------------------------" << "\n";

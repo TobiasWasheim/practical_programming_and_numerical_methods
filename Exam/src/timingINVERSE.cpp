@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::tuple<double,colVector> qr = InverseAlgorithm(M,1);
+    std::tuple<double,colVector> qr = InverseAlgorithm(M,1,colVector(), 1e-3);
     std::cout << "V[0] = " << std::get<1>(qr)[0] << std::endl; // Access an element to force usage
     return 0;
 }
