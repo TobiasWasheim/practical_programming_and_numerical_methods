@@ -1,0 +1,37 @@
+-------------------------------------------
+Homework: Root Finding - part A
+-------------------------------------------
+
+In part A Newton's method for finding roots
+has been inplemented. To test it, we use it
+to find the roots for the Rosenbrock- and  
+and Himmelblau function. 
+
+Rosenbrock: f(x,y) = (a-x)^2 + b (y-x^2)^2
+Himmelblau: f(x,y) = (x^2+y-11)^2 + (x+y^2-7)^2
+
+where we have choosen a = 5 and b = 100. The roots
+for the Rosenbrock function are (a,a^2) = (5,25).
+Below, we are going to print the roots that we have
+calculated numerically using Newto's method:
+5
+25
+
+
+The Himmelblau function has four local minima at (3,2), (-2.81,3.13), (-3.78,-3.28), and
+(3.58,-1.85). Below the four minima points are printed
+that are found numerically:
+2.9525
+2.02744
+
+-2.76098
+3.13055
+
+-3.74425
+-3.27195
+
+3.54886
+-1.83969
+
+
+The roots found using Newton's method are close to the analytical values.

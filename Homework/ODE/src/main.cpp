@@ -161,6 +161,6 @@ int main() {
     std::cout << "The plots can be seen in the folder plots/. In the first case, we simply get a  " << "\n";
     std::cout << "straight line as the velocity u' is zero, the displacement u is non-zero.       " << "\n";
     std::cout << "When u'(0) is non-zero we get circular motion (actually eleptical).             " << "\n";
-    std::cout << "When u'(0) is non-zero and ε is non-zero we get some sort of spiraling.         " << "\n\n";
+    std::cout << "When u'(0) is non-zero and ε is non-zero we get a spiral.         " << "\n\n";
     return 0;
 }

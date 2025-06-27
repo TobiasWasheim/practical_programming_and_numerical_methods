@@ -33,9 +33,9 @@ that are made up from the two bases.
 Comparing the method to the plain MC method  
 for N = 1000 points we get that              
 
-Plain MC unit circle area = 3.14
+Plain MC unit circle area = 3.188
 Quasi MC unit circle area = 3.14
-Plain MC unit circle error = 0.0519654
+Plain MC unit circle error = 0.0508788
 Quasi MC unit circle error = 0.0113137
 
 The exact value is 3.14... so for the quasi- 

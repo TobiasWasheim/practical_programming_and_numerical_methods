@@ -29,5 +29,5 @@ star. I have plotted three cases (different initial conditions):
 The plots can be seen in the folder plots/. In the first case, we simply get a  
 straight line as the velocity u' is zero, the displacement u is non-zero.       
 When u'(0) is non-zero we get circular motion (actually eleptical).             
-When u'(0) is non-zero and ε is non-zero we get some sort of spiraling.         
+When u'(0) is non-zero and ε is non-zero we get a spiral.         
 

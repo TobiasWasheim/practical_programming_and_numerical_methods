@@ -44,11 +44,6 @@ int main() {
 
 
 
- 
-
-    colVector m = M(-0.5);
-    m.print();
-
 
 
     std::cout << "-------------------------------------------" << "\n";
@@ -70,9 +65,8 @@ int main() {
     newtonRosenbrock.print();
     std::cout << "\n\n";
     
-    std::cout << "For the Himmelblau function it has one local maximum (-0.27,-0.92)," << "\n";
-    std::cout << "and four local minima at (3,2), (-2.81,3.13), (-3.78,-3.28), and" << "\n";
-    std::cout << "(3.58,-1.85). Below the maximum and four minima points are printed" << "\n";
+    std::cout << "The Himmelblau function has four local minima at (3,2), (-2.81,3.13), (-3.78,-3.28), and" << "\n";
+    std::cout << "(3.58,-1.85). Below the four minima points are printed" << "\n";
     std::cout << "that are found numerically:" << "\n";
     // NewtonsMethod(himmelblau,{-0.27,-0.9},1e-6,colVector()).print();
     // std::cout << "\n";

@@ -45,7 +45,12 @@ plot.svg: timing.data
 
 
 # Test factorization O(N^3)
- 
+timing.data: $(TIMING)
+	>$@
+	for N in $$(seq 20 20 400); do \
+		time --format "$$N %e" --output $@ --append \
+		./$^ -size:$$N 1>exe/out 2>exe/err ;\
+    done
 
 
 # Create executable for main
