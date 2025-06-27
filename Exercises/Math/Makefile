@@ -3,7 +3,7 @@ LDLIBS += -lstdc++ -lm
 
 
 Out.txt : main
-	./main > output.txt
+	./main > out.txt
 main: objects/main.o objects/sfuns.o objects/math.o objects/tables.o
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 objects/main.o: headers/sfuns.h headers/math.h headers/tables.h src/main.cpp
@@ -15,7 +15,7 @@ objects/sfuns.o: headers/sfuns.h src/sfuns.cpp
 objects/math.o: headers/math.h src/math.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $(filter %.cpp,$^)
 clean:
-	$(RM) output.txt main objects/*.o
+	$(RM) out.txt main objects/*.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)

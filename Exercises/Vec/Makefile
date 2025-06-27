@@ -1,7 +1,7 @@
 CXXFLAGS += -Wall -std=c++23 #-ferror-limit=1 
 LDLIBS += -lstdc++ -lm
 
-output.txt: main
+out.txt: main
 	./$< > $@
 
 main: objects/main.o objects/vec.o
@@ -14,7 +14,7 @@ objects/main.o: headers/vec.h src/main.cpp
 
 
 clean:
-	$(RM) output.txt main objects/*.o
+	$(RM) out.txt main objects/*.o
 test:
 	@echo "CXX:" $(CXX)
 	@echo "RM:" $(RM)

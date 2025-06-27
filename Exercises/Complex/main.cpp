@@ -25,7 +25,7 @@ int main() {
     
     std::cout << "Square root of   i = " << std::sqrt(std::complex<double>(0,1)).real() 
               << " + "<< std::sqrt(std::complex<double>(0,1)).imag() << "i" <<  "\n";
-    
+        
 
     std::cout << "               e^i = " << std::exp(std::complex<double>(0,1)).real() 
               << " + "<< std::exp(std::complex<double>(0,1)).imag() << "i" <<  "\n";

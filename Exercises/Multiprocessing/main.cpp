@@ -1,6 +1,7 @@
 #include<thread>
 #include<functional>
 #include<string>
+#include<vector>
 #include<iostream>
 
 struct data 

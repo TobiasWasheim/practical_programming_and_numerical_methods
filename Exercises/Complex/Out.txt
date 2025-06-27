@@ -1,3 +1,5 @@
+If you comparisons are true we represent it as '1' and if false it is '0'.
+
 Square root of  -1 = 0 + 1i
 Sqrt(-1) compared with our approx function: 1
 Square root of   i = 0.707107 + 0.707107i

@@ -6,16 +6,18 @@ CXXFLAGS = -Wall -O3 -ffast-math
 LDLIBS = -lstdc++ -lm
 
 
+
+
 all: output
 
-output:
-	./main < input.txt > output.txt
+output: main
 
 main : main.o
-	$(CXX) $(CXXFLAGS) $(MAIN_OBJ) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) main.o -o $@
+	./$@ < input.txt > out.txt
 
 main.o : GenList.h main.cpp
-	$(CXX) $(CXXFLAGS) -c $(MAIN_SRC) -o $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) -c main.cpp -o $@
 
 clean:
-	rm -f output.txt main.o main
+	rm -f out.txt main.o main
